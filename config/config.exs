@@ -3,4 +3,4 @@
 use Mix.Config
 
 config :mailchimp,
-  apikey: "52a8b807811ab86166cfe2e6b2e1113d-us10"
+  apikey: "your api-us10"
