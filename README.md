@@ -26,7 +26,7 @@ end
 2. Start a new process:
 
 
-    Mailchimp.start_link []
+    Mailchimp.start_link
 
 ### Getting Account Details
 

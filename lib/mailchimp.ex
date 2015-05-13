@@ -6,7 +6,7 @@ defmodule Mailchimp do
   @apikey Application.get_env :mailchimp, :apikey
 
   ### Public API
-  def start_link(_opts) do
+  def start_link do
     shard = get_shard
     apiroot = "https://#{shard}.api.mailchimp.com/3.0/"
     config = %{apiroot: apiroot, apikey: @apikey}
