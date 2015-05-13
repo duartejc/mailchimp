@@ -1,3 +1,5 @@
+[![Hex Version](http://img.shields.io/hexpm/v/mailchimp.svg)](https://hex.pm/packages/mailchimp)
+
 This is a basic Elixir wrapper for version 3 of the MailChimp API.
 
 ## Installation
