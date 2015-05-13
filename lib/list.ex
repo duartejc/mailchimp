@@ -1,11 +1,24 @@
 defmodule Mailchimp.List do
   import Mailchimp.HTTPClient
 
-  def get_all(config) do
+  def all(config) do
     map_header = %{"Authorization" => "apikey #{config.apikey}"}
     config.apiroot
     |> build_url
     |> get(map_header)
+  end
+
+  def members(config, list_id) do
+    map_header = %{"Authorization" => "apikey #{config.apikey}"}
+    config.apiroot <> "lists/" <> list_id <> "/members"
+    |> get(map_header)
+  end
+
+  def add_member(config, %{"list_id" => list_id, "email" => email}) do
+    map_header = %{"Authorization" => "apikey #{config.apikey}"}
+    {:ok, body} = Poison.encode(%{email_address: email, status: "subscribed"})
+    config.apiroot <> "lists/" <> list_id <> "/members"
+    |> post(body, map_header)
   end
 
   def build_url(root) do

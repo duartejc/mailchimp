@@ -6,7 +6,7 @@ defmodule Mailchimp do
   @apikey Application.get_env :mailchimp, :apikey
 
   ### Public API
-  def start_link(_opts) do
+  def start do
     shard = get_shard
     apiroot = "https://#{shard}.api.mailchimp.com/3.0/"
     config = %{apiroot: apiroot, apikey: @apikey}
@@ -21,6 +21,14 @@ defmodule Mailchimp do
     GenServer.call(:mailchimp, :all_lists)
   end
 
+  def get_list_members(list_id) do
+    GenServer.call(:mailchimp, {:list_members, list_id})
+  end
+
+  def add_member(list_id, email) do
+    GenServer.call(:mailchimp, {:add_member, list_id, email})
+  end
+
   ### Server API
   def handle_call(:account_details, _from, config) do
     details = Mailchimp.Account.get_details(config)
@@ -28,8 +36,18 @@ defmodule Mailchimp do
   end
 
   def handle_call(:all_lists, _from, config) do
-    lists = Mailchimp.List.get_all(config)
+    lists = Mailchimp.List.all(config)
     {:reply, lists, config}
+  end
+
+  def handle_call({:list_members, list_id}, _from, config) do
+    members = Mailchimp.List.members(config, list_id)
+    {:reply, members, config}
+  end
+
+  def handle_call({:add_member, list_id, email}, _from, config) do
+    member = Mailchimp.List.add_member(config, %{"list_id" => list_id, "email" => email})
+    {:reply, member, config}
   end
 
   def get_shard do
