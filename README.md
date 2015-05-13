@@ -25,9 +25,7 @@ end
 
 1. Put your API key in your *config.exs* file.
 
-2. Start a new process:
-
-
+2. Start a new process:  
 
     Mailchimp.start_link
 
