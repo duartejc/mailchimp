@@ -31,8 +31,12 @@ end
 
 ### Getting Account Details
 
-    Mailchimp.get_account_details/0
+    Mailchimp.get_account_details()
 
 ### Getting All Lists
 
-    Mailchimp.get_all_lists/0
+    Mailchimp.get_all_lists()
+    
+### Adding a Member to a List
+
+    Mailchimp.add_member("list_id", "e-mail")
