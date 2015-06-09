@@ -27,7 +27,7 @@ end
 
 ```elixir
 config :mailchimp,
-apikey: "your api-us10"
+  apikey: "your api-us10"
 ```
 
 2. Start a new process:  
