@@ -23,7 +23,12 @@ end
 
 ## Usage
 
-1. Put your API key in your *config.exs* file.
+1. Put your API key in your *config.exs* file:
+
+```elixir
+config :mailchimp,
+apikey: "your api-us10"
+```
 
 2. Start a new process:  
 
