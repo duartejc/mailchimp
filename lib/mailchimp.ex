@@ -1,16 +1,15 @@
 defmodule Mailchimp do
   use Application
-  use GenServer
-  require Logger
 
-  @apikey Application.get_env :mailchimp, :apikey
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
 
-  ### Public API
-  def start_link do
-    shard = get_shard
-    apiroot = "https://#{shard}.api.mailchimp.com/3.0/"
-    config = %{apiroot: apiroot, apikey: @apikey}
-    GenServer.start_link(Mailchimp, config, name: :mailchimp)
+    children = [
+      worker(Mailchimp.Config, []),
+    ]
+
+    opts = [strategy: :one_for_one, name: Aliver.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 
   def get_account_details do
@@ -49,19 +48,4 @@ defmodule Mailchimp do
     member = Mailchimp.List.add_member(config, %{"list_id" => list_id, "email" => email})
     {:reply, member, config}
   end
-
-  def get_shard do
-    parts = @apikey
-    |> String.split(~r{-})
-
-    case length(parts) do
-      2 ->
-        List.last parts
-      _ ->
-        Logger.error "This doesn't look like an API Key: #{@apikey}"
-        Logger.info "The API Key should have both a key and a server name, separated by a dash, like this: abcdefg8abcdefg6abcdefg4-us1"
-        {:error}
-    end
-  end
-
 end

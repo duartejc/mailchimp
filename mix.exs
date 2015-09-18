@@ -13,7 +13,8 @@ defmodule Mailchimp.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :httpoison]]
+    [mod: {Mailchimp, []},
+      applications: [:logger, :httpoison]]
   end
 
   defp description do
