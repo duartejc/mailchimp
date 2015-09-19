@@ -43,8 +43,16 @@ defmodule Mailchimp.Config do
 
   # Private methods
 
+  defp sanitize_api_key({:system, env_var}) do
+    sanitize_api_key System.get_env(env_var)
+  end
+
+  defp sanitize_api_key(api_key) do
+    api_key
+  end
+
   defp get_api_key_from_config do
-    Application.get_env(:mailchimp, :apikey) || Application.get_env(:mailchimp, :api_key)
+    sanitize_api_key(Application.get_env(:mailchimp, :apikey)) || sanitize_api_key(Application.get_env(:mailchimp, :api_key))
   end
 
   defp get_api_version_from_config do
