@@ -1,40 +1,28 @@
 defmodule Mailchimp.List do
-  import Mailchimp.HTTPClient
+  alias Mailchimp.HTTPClient
+  alias Mailchimp.Link
 
-  def all(config) do
-    map_header = %{"Authorization" => "apikey #{config.apikey}"}
-    config.apiroot
-    |> build_url
-    |> get(map_header)
+  defstruct id: nil, name: nil, contact: nil, permission_reminder: nil, use_archive_bar: nil, campaign_defaults: nil, notify_on_subscribe: nil, notify_on_unsubscribe: nil, list_rating: nil, email_type_option: nil, subscribe_url_short: nil, subscribe_url_long: nil, beamer_address: nil, visibility: nil, modules: [], stats: nil, links: []
+
+  def new(attributes) do
+    %__MODULE__{
+      id: attributes[:id],
+      name: attributes[:name],
+      contact: attributes[:contact],
+      permission_reminder: attributes[:permission_reminder],
+      use_archive_bar: attributes[:use_archive_bar],
+      campaign_defaults: attributes[:campaign_defaults],
+      notify_on_subscribe: attributes[:notify_on_subscribe],
+      notify_on_unsubscribe: attributes[:notify_on_unsubscribe],
+      list_rating: attributes[:list_rating],
+      email_type_option: attributes[:email_type_option],
+      subscribe_url_short: attributes[:subscribe_url_short],
+      subscribe_url_long: attributes[:subscribe_url_long],
+      beamer_address: attributes[:beamer_address],
+      visibility: attributes[:visibility],
+      modules: attributes[:modules],
+      stats: attributes[:stats],
+      links: Link.get_links_from_attributes(attributes)
+    }
   end
-
-  def members(config, list_id) do
-    map_header = %{"Authorization" => "apikey #{config.apikey}"}
-    config.apiroot <> "lists/" <> list_id <> "/members"
-    |> get(map_header)
-  end
-
-  def add_member(config, %{"list_id" => list_id, "email" => email}) do
-    map_header = %{"Authorization" => "apikey #{config.apikey}"}
-    {:ok, body} = Poison.encode(%{email_address: email, status: "subscribed"})
-    config.apiroot <> "lists/" <> list_id <> "/members"
-    |> post(body, map_header)
-  end
-
-  def build_url(root) do
-    params = [
-      {:fields, ["lists.id", "lists.name", "lists.stats.member_count"]},
-      {:count, 10},
-      {:offset, 0}
-    ]
-    fields = "fields=" <> as_string(params[:fields])
-    count = "count=" <> to_string params[:count]
-    offset = "offset=" <> to_string params[:offset]
-    url = root <> "lists?" <> fields <> "&" <> count <> "&" <> offset
-  end
-
-  def as_string(param) do
-    Enum.reduce(param, fn(s, acc) -> acc<>","<>s end)
-  end
-
 end

@@ -4,7 +4,12 @@ defmodule Mailchimp.HTTPClient do
   alias Mailchimp.Config
 
   def process_url(url) do
-    Config.root_endpoint <> url
+    root_endpoint = Config.root_endpoint
+    if String.starts_with?(url, root_endpoint) do
+      url
+    else
+      root_endpoint <> url
+    end
   end
 
   def process_response_body(body) do
