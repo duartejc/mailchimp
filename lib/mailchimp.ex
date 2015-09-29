@@ -54,6 +54,11 @@ defmodule Mailchimp do
     {:reply, member, config}
   end
 
+  def handle_call({:add_pending_member, list_id, email}, _from, config) do
+    member = Mailchimp.List.add_pending_member(config, %{"list_id" => list_id, "email" => email})
+    {:reply, member, config}
+  end
+
   def get_shard do
     parts = @apikey
     |> String.split(~r{-})
