@@ -29,6 +29,10 @@ defmodule Mailchimp do
     GenServer.call(:mailchimp, {:add_member, list_id, email})
   end
 
+  def add_pending_member(list_id, email) do
+    GenServer.call(:mailchimp, {:add_pending_member, list_id, email})
+  end
+
   ### Server API
   def handle_call(:account_details, _from, config) do
     details = Mailchimp.Account.get_details(config)

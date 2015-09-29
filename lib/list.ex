@@ -21,6 +21,13 @@ defmodule Mailchimp.List do
     |> post(body, map_header)
   end
 
+  def add_pending_member(config, %{"list_id" => list_id, "email" => email}) do
+    map_header = %{"Authorization" => "apikey #{config.apikey}"}
+    {:ok, body} = Poison.encode(%{email_address: email, status: "pending"})
+    config.apiroot <> "lists/" <> list_id <> "/members"
+    |> post(body, map_header)
+  end
+
   def build_url(root) do
     params = [
       {:fields, ["lists.id", "lists.name", "lists.stats.member_count"]},
