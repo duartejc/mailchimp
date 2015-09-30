@@ -15,6 +15,8 @@ defmodule Mailchimp.HTTPClient do
     case HTTPoison.post(url, body, header) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         process_response_body body
+      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
+        process_response_body body
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         "Not found :("
       {:error, %HTTPoison.Error{reason: reason}} ->
