@@ -3,7 +3,7 @@ defmodule Mailchimp.Mixfile do
 
   def project do
     [app: :mailchimp,
-     version: "0.0.1",
+     version: "0.0.4",
      elixir: "~> 1.0",
      description: description,
      package: package,
@@ -29,7 +29,7 @@ defmodule Mailchimp.Mixfile do
 
   defp package do
     [files: ["lib", "mix.exs", "README.md", "LICENSE"],
-     contributors: ["Jean Duarte"],
+     maintainers: ["Jean Duarte"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}]
   end
