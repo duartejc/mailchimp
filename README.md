@@ -21,27 +21,16 @@ def application do
 end
 ```
 
-## Usage
+## API
 
-1. Put your API key in your *config.exs* file:
+Put your API key in your *config.exs* file:
 
 ```elixir
 config :mailchimp,
   apikey: "your api-us10"
 ```
+For now Mailchimp only supports HTTP Basic Auth.
 
-2. Start a new process:  
+## Documentation
 
-    Mailchimp.start_link
-
-### Getting Account Details
-
-    Mailchimp.get_account_details()
-
-### Getting All Lists
-
-    Mailchimp.get_all_lists()
-    
-### Adding a Member to a List
-
-    Mailchimp.add_member("list_id", "e-mail")
+TODO
