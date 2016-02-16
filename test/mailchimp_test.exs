@@ -13,14 +13,4 @@ defmodule MailchimpTest do
     assert len == 2
   end
 
-  test "it can start application" do
-    {status, _} = Mailchimp.start_link([])
-    assert :ok == status
-  end
-
-  test "it can get shard from apikey" do
-    shard = Mailchimp.get_shard
-    assert false == is_nil shard
-  end
-  
 end
