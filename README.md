@@ -8,7 +8,7 @@ First, add MailChimp lib to your `mix.exs` dependencies:
 
 ```elixir
 def deps do
-  [{:mailchimp, "~> 0.0.2"}]
+  [{:mailchimp, "~> 0.0.5"}]
 end
 ```
 
@@ -21,7 +21,7 @@ def application do
 end
 ```
 
-## API
+## Usage
 
 Put your API key in your *config.exs* file:
 
@@ -29,8 +29,19 @@ Put your API key in your *config.exs* file:
 config :mailchimp,
   apikey: "your api-us10"
 ```
-For now Mailchimp only supports HTTP Basic Auth.
 
-## Documentation
+Start a new process:  
 
-TODO
+    Mailchimp.start_link
+
+### Getting Account Details
+
+    Mailchimp.Account.get()
+
+### Getting All Lists
+
+    TODO
+
+### Adding a Member to a List
+
+    TODO
