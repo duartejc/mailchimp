@@ -14,6 +14,14 @@ defmodule Mailchimp.List do
     |> get(map_header)
   end
 
+  def get_member(config, %{"list_id" => list_id, "email" => email}) do
+    map_header = %{"Authorization" => "apikey #{config.apikey}"}
+    lowercase_email = String.downcase(email)
+    md5_email = md5(lowercase_email)
+    config.apiroot <> "lists/" <> list_id <> "/members/" <> md5_email
+    |> get(map_header)
+  end
+
   def add_member(config, %{"list_id" => list_id, "email" => email}) do
     map_header = %{"Authorization" => "apikey #{config.apikey}"}
     {:ok, body} = Poison.encode(%{email_address: email, status: "subscribed"})
