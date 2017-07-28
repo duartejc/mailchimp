@@ -51,6 +51,15 @@ defmodule Mailchimp.ResponseMockCase do
             {:ok, response}
         end
       end,
+      put: fn(url, data) ->
+        url = clean_url(url)
+        case responses[:put][url] do
+          nil ->
+            {:error, "Mock for PUT #{url} not defined"}
+          response ->
+            {:ok, response}
+        end
+      end,
     ]
 
     reset_config()

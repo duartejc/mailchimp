@@ -29,7 +29,7 @@ defmodule Mailchimp.ListTest do
       {:get, "/"} => {200, "fUA6qoeH-DhFPD23FvGRMw"},
       {:get, "/lists"} => {200, "l54IYCxmxv7wSmiBVJCzKg"},
       {:get, "/lists/42e99f9b48/members"} => {200, "kl-_QUXphCoTRCdZdw0rJw"},
-      {:get, "/lists/42e99f9b48/members/AA4D0693563AA91ED4EE9DB72EFB2DD5"} => {200, "OOia7QoPpmlDBC_HaapOug"}
+      {:get, "/lists/42e99f9b48/members/AA4D0693563AA91ED4EE9DB72EFB2DD5"} => {200, "OOia7QoPpmlDBC_HaapOug"},
     }
     test "creates member", %{response_mocks: response_mocks} do
       with_response_mocks response_mocks do
