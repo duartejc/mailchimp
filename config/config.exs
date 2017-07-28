@@ -1,6 +1,4 @@
 use Mix.Config
 
-if Mix.env == :test do
-  config :mailchimp,
-    apikey: "your apikey-us12"
-end
+config :mailchimp,
+  api_key: "your apikey-us12"

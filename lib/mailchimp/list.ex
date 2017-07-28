@@ -39,7 +39,13 @@ defmodule Mailchimp.List do
     end
   end
 
-  def create_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email_address, status, merge_fields \\ %{}) when is_binary(email_address) and is_map(merge_fields) and status in [:subscribed, :pending, :unsubscribed, :cleaned] do
+  def members!(list) do
+    {:ok, members} = members(list)
+    members
+  end
+
+  def create_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email_address, status, merge_fields \\ %{})
+  when is_binary(email_address) and is_map(merge_fields) and status in [:subscribed, :pending, :unsubscribed, :cleaned] do
     {:ok, response} = HTTPClient.get(href)
     case response do
       %Response{status_code: 200, body: body} ->
@@ -59,5 +65,10 @@ defmodule Mailchimp.List do
       %Response{status_code: _, body: body} ->
         {:error, body}
     end
+  end
+
+  def create_member!(member, email_address, status, merge_fields \\ %{}) do
+    {:ok, member} = create_member(member, email_address, status, merge_fields)
+    member
   end
 end

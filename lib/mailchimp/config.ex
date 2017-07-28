@@ -1,77 +1,70 @@
 defmodule Mailchimp.Config do
-  use GenServer
+  @moduledoc """
+  Mailchimp Config Module
+  """
 
-  defstruct api_key: nil, api_version: "3.0"
+  @default_api_version "3.0"
 
-  require Logger
+  @doc """
+  Return configured API Key
 
-  # Public API
+  ### Examples
 
-  def start_link(%__MODULE__{}=config) do
-    Agent.start_link(fn -> config end, name: __MODULE__)
+      iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
+      iex> Mailchimp.Config.api_key!()
+      "your apikey-us12"
+
+  """
+  @spec api_key!() :: String.t | no_return
+  def api_key!, do: Application.fetch_env!(:mailchimp, :api_key)
+
+  @doc """
+  Return configured API Version
+
+  ### Examples
+
+      iex> Application.put_env(:mailchimp, :api_version, "1.0")
+      iex> Mailchimp.Config.api_version()
+      "1.0"
+
+      iex> Application.delete_env(:mailchimp, :api_version)
+      iex> Mailchimp.Config.api_version()
+      "3.0"
+
+  """
+  @spec api_version() :: String.t
+  def api_version, do: Application.get_env(:mailchimp, :api_version, @default_api_version)
+
+  @doc """
+  Return configured API Version
+
+  ### Examples
+
+      iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
+      iex> Mailchimp.Config.shard!()
+      "us12"
+
+  """
+  @spec shard!() :: String.t | no_return
+  def shard! do
+    api_key!()
+    |> String.split("-", parts: 2)
+    |> Enum.at(1)
   end
 
-  def start_link do
-    config = %__MODULE__{
-      api_key: get_api_key_from_config(),
-      api_version: get_api_version_from_config(),
-    }
+  @doc """
+  Return configured API Version
 
-    Agent.start_link(fn -> config end, name: __MODULE__)
-  end
+  ### Examples
 
-  def root_endpoint do
-    Agent.get(__MODULE__, fn %{api_key: api_key, api_version: api_version} ->
-      {:ok, shard} = get_shard(api_key)
-      "https://#{shard}.api.mailchimp.com/#{api_version}/"
-    end)
-  end
+      iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
+      iex> Application.delete_env(:mailchimp, :api_version)
+      iex> Mailchimp.Config.root_endpoint!()
+      "https://us12.api.mailchimp.com/3.0/"
 
-  def api_key do
-    Agent.get(__MODULE__, fn %{api_key: api_key} -> api_key end)
-  end
-
-  def api_version do
-    Agent.get(__MODULE__, fn %{api_version: api_version} -> api_version end)
-  end
-
-  def update(config) when is_list(config) do
-    Agent.update(__MODULE__, fn current_config ->
-      Enum.reduce(config, current_config, fn({k,v}, acc) -> Map.put(acc, k, v) end)
-    end)
-  end
-
-  # Private methods
-
-  defp sanitize_api_key({:system, env_var}) do
-    sanitize_api_key System.get_env(env_var)
-  end
-
-  defp sanitize_api_key(api_key) do
-    api_key
-  end
-
-  defp get_api_key_from_config do
-    sanitize_api_key(Application.get_env(:mailchimp, :apikey)) || sanitize_api_key(Application.get_env(:mailchimp, :api_key))
-  end
-
-  defp get_api_version_from_config do
-    Application.get_env(:mailchimp, :api_version, "3.0")
-  end
-
-  defp get_shard(api_key) do
-    shard = api_key
-            |> String.split(~r{-})
-            |> List.last
-
-    case shard do
-      nil ->
-        Logger.error "[mailchimp] This doesn't look like an API Key: #{api_key}"
-        Logger.error "[mailchimp] The API Key should have both a key and a server name, separated by a dash, like this: abcdefg8abcdefg6abcdefg4-us1"
-        :error
-
-      _ ->
-        {:ok, shard}
-    end
+  """
+  @spec root_endpoint!() :: String.t | no_return
+  def root_endpoint! do
+    "https://#{shard!()}.api.mailchimp.com/#{api_version()}/"
   end
 end

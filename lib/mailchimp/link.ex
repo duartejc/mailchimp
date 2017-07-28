@@ -11,10 +11,11 @@ defmodule Mailchimp.Link do
     }
   end
 
-  def get_links_from_attributes(attributes) do
-    (attributes._links || [])
+  def get_links_from_attributes(%{_links: links}) do
+    links
     |> Enum.map(&__MODULE__.new(&1))
     |> Enum.map(&({&1.rel, &1}))
     |> Enum.into(%{})
   end
+  def get_links_from_attributes(_), do: get_links_from_attributes(%{_links: []})
 end
