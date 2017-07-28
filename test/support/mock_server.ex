@@ -1,14 +1,14 @@
 defmodule Mailchimp.MockServer do
 
   @dump_dir Path.join([
-    Application.app_dir(:mailchimp),
+    File.cwd!,
     "priv",
     "test",
     "dump",
   ])
 
   @mock_dir Path.join([
-    Application.app_dir(:mailchimp),
+    File.cwd!,
     "priv",
     "test",
     "mock",

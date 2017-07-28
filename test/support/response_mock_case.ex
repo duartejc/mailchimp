@@ -42,7 +42,19 @@ defmodule Mailchimp.ResponseMockCase do
             {:ok, response}
         end
       end,
+      post: fn(url, data) ->
+        url = clean_url(url)
+        case responses[:post][url] do
+          nil ->
+            {:error, "Mock for POST #{url} not defined"}
+          response ->
+            {:ok, response}
+        end
+      end,
     ]
+
+    reset_config()
+
     {:ok, %{response_mocks: response_mocks}}
   end
 
@@ -53,4 +65,10 @@ defmodule Mailchimp.ResponseMockCase do
     url
   end
   defp clean_url(url), do: URI.parse(url).path
+
+  defp reset_config do
+    Application.delete_env(:mailchimp, :api_version)
+    api_key = System.get_env("MAILCHIMP_TEST_API_KEY") || raise "Specify MAILCHIMP_TEST_API_KEY"
+    Application.put_env(:mailchimp, :api_key, api_key)
+  end
 end
