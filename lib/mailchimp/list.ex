@@ -3,6 +3,7 @@ defmodule Mailchimp.List do
   alias Mailchimp.HTTPClient
   alias Mailchimp.Link
   alias Mailchimp.Member
+  alias Mailchimp.List.InterestCategory
 
   defstruct id: nil, name: nil, contact: nil, permission_reminder: nil, use_archive_bar: nil, campaign_defaults: nil, notify_on_subscribe: nil, notify_on_unsubscribe: nil, list_rating: nil, email_type_option: nil, subscribe_url_short: nil, subscribe_url_long: nil, beamer_address: nil, visibility: nil, modules: [], stats: nil, links: []
 
@@ -42,6 +43,22 @@ defmodule Mailchimp.List do
   def members!(list) do
     {:ok, members} = members(list)
     members
+  end
+
+  def interest_categories(%__MODULE__{links: %{"interest-categories" => %Link{href: href}}}) do
+    {:ok, response} = HTTPClient.get(href)
+    case response do
+      %Response{status_code: 200, body: body} ->
+        {:ok, Enum.map(body.categories, &InterestCategory.new(&1))}
+
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def interest_categories!(list) do
+    {:ok, categories} = interest_categories(list)
+    categories
   end
 
   def create_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email_address, status, merge_fields \\ %{}, additional_data \\ %{})
