@@ -24,6 +24,24 @@ defmodule Mailchimp.ListTest do
     end
   end
 
+  describe "get_member/5" do
+    @tag response_mocks: %{
+      {:get, "/"} => {200, "fUA6qoeH-DhFPD23FvGRMw"},
+      {:get, "/lists"} => {200, "l54IYCxmxv7wSmiBVJCzKg"},
+      {:get, "/lists/42e99f9b48/members"} => {200, "kl-_QUXphCoTRCdZdw0rJw"},
+      {:get, "/lists/42e99f9b48/members/AA4D0693563AA91ED4EE9DB72EFB2DD5"} => {200, "OOia7QoPpmlDBC_HaapOug"}
+    }
+    test "creates member", %{response_mocks: response_mocks} do
+      with_response_mocks response_mocks do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+        {:ok, %Member{status: :subscribed, merge_fields: %{LNAME: "Test"}, language: "de"}}
+          = List.get_member(list, "mailchimp1-test@elixir.com")
+        %Member{} = List.get_member!(list, "mailchimp1-test@elixir.com")
+      end
+    end
+  end
+
   describe "interest_categories/1" do
     @tag response_mocks: %{
       {:get, "/"} => {200, "fUA6qoeH-DhFPD23FvGRMw"},

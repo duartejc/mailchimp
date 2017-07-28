@@ -45,6 +45,26 @@ defmodule Mailchimp.List do
     members
   end
 
+  def get_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email) do
+    subscriber_id = email
+    |> String.downcase
+    |> md5
+
+    {:ok, response} = HTTPClient.get(href <> "/#{subscriber_id}")
+    case response do
+      %Response{status_code: 200, body: body} ->
+        {:ok, Member.new(body)}
+
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def get_member!(list, email) do
+    {:ok, member} = get_member(list, email)
+    member
+  end
+
   def interest_categories(%__MODULE__{links: %{"interest-categories" => %Link{href: href}}}) do
     {:ok, response} = HTTPClient.get(href)
     case response do
@@ -87,5 +107,10 @@ defmodule Mailchimp.List do
   def create_member!(list, email_address, status, merge_fields \\ %{}, additional_data \\ %{}) do
     {:ok, member} = create_member(list, email_address, status, merge_fields, additional_data)
     member
+  end
+
+  defp md5(string) do
+    :crypto.hash(:md5, string)
+    |> Base.encode16
   end
 end
