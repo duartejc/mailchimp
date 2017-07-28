@@ -28,6 +28,11 @@ defmodule Mailchimp.Account do
     end
   end
 
+  def get! do
+    {:ok, account} = get()
+    account
+  end
+
   def lists(%__MODULE__{links: %{"lists" => %Link{href: href}}}) do
     {:ok, response} = HTTPClient.get(href)
     case response do
@@ -37,5 +42,10 @@ defmodule Mailchimp.Account do
       %Response{status_code: _, body: body} ->
         {:error, body}
     end
+  end
+
+  def lists!(account) do
+    {:ok, lists} = lists(account)
+    lists
   end
 end
