@@ -56,7 +56,7 @@ defmodule Mailchimp.Config do
   end
 
   defp get_api_version_from_config do
-    Application.get_env(:mailchimp, :api_version) || "3.0"
+    Application.get_env(:mailchimp, :api_version, "3.0")
   end
 
   defp get_shard(api_key) do
