@@ -5,10 +5,10 @@ defmodule Mailchimp.Mixfile do
     [app: :mailchimp,
      version: "0.0.5",
      elixir: "~> 1.0",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      source_url: "https://github.com/duartejc/mailchimp",
-     deps: deps,
+     deps: deps(),
      docs: [readme: "README.md", main: "README"]]
   end
 

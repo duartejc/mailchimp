@@ -13,8 +13,8 @@ defmodule Mailchimp.Config do
 
   def start_link do
     config = %__MODULE__{
-      api_key: get_api_key_from_config,
-      api_version: get_api_version_from_config
+      api_key: get_api_key_from_config(),
+      api_version: get_api_version_from_config(),
     }
 
     Agent.start_link(fn -> config end, name: __MODULE__)
