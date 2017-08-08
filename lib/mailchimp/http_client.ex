@@ -23,7 +23,16 @@ defmodule Mailchimp.HTTPClient do
       "https://us12.api.mailchimp.com/3.0/test"
 
   """
-  def process_url(url) do
+  case Mix.env do
+    :test ->
+      def process_url(url) do
+        IO.puts url
+        _process_url(url)
+      end
+    _ ->
+      def process_url(url), do: _process_url(url)
+  end
+  def _process_url(url) do
     root = Config.root_endpoint!
     cond do
       String.starts_with?(url, root) ->
