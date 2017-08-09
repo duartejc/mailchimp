@@ -30,18 +30,29 @@ config :mailchimp,
   apikey: "your api-us10"
 ```
 
+or
+
+```elixir
+  Application.put_env(:mailchimp, :api_key, "your apikey-us12")
+```
+
+
 Start a new process:  
 
     Mailchimp.start_link
 
 ### Getting Account Details
 
-    Mailchimp.Account.get()
+    Mailchimp.Account.get!()
 
 ### Getting All Lists
 
-    TODO
+    Mailchimp.Account.get! |> Mailchimp.Account.lists!
 
 ### Adding a Member to a List
 
-    TODO
+    Mailchimp.List.create_member(list, "test@email.com", :subscribed, %{}, %{})
+
+### Creating a new Campaign
+
+    Mailchimp.Campaign.create!(:regular)     
