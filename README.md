@@ -27,7 +27,7 @@ Put your API key in your *config.exs* file:
 
 ```elixir
 config :mailchimp,
-  apikey: "your api-us10"
+  api_key: "your api-us10"
 ```
 
 or
