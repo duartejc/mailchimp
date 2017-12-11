@@ -8,7 +8,7 @@ First, add MailChimp lib to your `mix.exs` dependencies:
 
 ```elixir
 def deps do
-  [{:mailchimp, "~> 0.0.6"}]
+  [{:mailchimp, "~> 0.0.7"}]
 end
 ```
 
