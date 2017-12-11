@@ -3,7 +3,7 @@ defmodule Mailchimp.Mixfile do
 
   def project do
     [app: :mailchimp,
-     version: "0.0.6",
+     version: "0.0.7",
      elixir: "~> 1.4",
      aliases: aliases(),
      description: description(),

@@ -57,8 +57,8 @@ defmodule Mailchimp.Campaign do
     }
   end
 
-  def list do
-    {:ok, response} = HTTPClient.get("/campaigns")
+  def list(query_params) do
+    {:ok, response} = HTTPClient.get("/campaigns", [], params: query_params)
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.campaigns, &new(&1))}
@@ -68,8 +68,8 @@ defmodule Mailchimp.Campaign do
     end
   end
 
-  def list! do
-    {:ok, campaigns} = list()
+  def list!(query_params \\ %{}) do
+    {:ok, campaigns} = list(query_params)
     campaigns
   end
 

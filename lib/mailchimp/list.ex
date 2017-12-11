@@ -29,8 +29,8 @@ defmodule Mailchimp.List do
     }
   end
 
-  def members(%__MODULE__{links: %{"members" => %Link{href: href}}}) do
-    {:ok, response} = HTTPClient.get(href)
+  def members(%__MODULE__{links: %{"members" => %Link{href: href}}}, query_params) do
+    {:ok, response} = HTTPClient.get(href, [], params: query_params)
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.members, &Member.new(&1))}
@@ -40,8 +40,8 @@ defmodule Mailchimp.List do
     end
   end
 
-  def members!(list) do
-    {:ok, members} = members(list)
+  def members!(list, query_params \\ %{}) do
+    {:ok, members} = members(list, query_params)
     members
   end
 
