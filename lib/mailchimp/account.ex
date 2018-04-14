@@ -18,13 +18,15 @@ defmodule Mailchimp.Account do
   end
 
   def get do
-    {:ok, response} = HTTPClient.get("/")
-    case response do
-      %Response{status_code: 200, body: body} ->
+    case HTTPClient.get("/") do
+      {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, __MODULE__.new(body)}
 
-      %Response{status_code: _, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
