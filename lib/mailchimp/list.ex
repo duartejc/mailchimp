@@ -83,24 +83,28 @@ defmodule Mailchimp.List do
 
   def create_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email_address, status, merge_fields \\ %{}, additional_data \\ %{})
   when is_binary(email_address) and is_map(merge_fields) and status in [:subscribed, :pending, :unsubscribed, :cleaned] do
-    {:ok, response} = HTTPClient.get(href)
-    case response do
-      %Response{status_code: 200, body: body} ->
+    case HTTPClient.get(href) do
+      {:ok, %Response{status_code: 200, body: body}} ->
         links = Link.get_links_from_attributes(body)
         href = links["create"].href
         data = Map.merge(additional_data, %{email_address: email_address, status: status, merge_fields: merge_fields})
 
-        {:ok, response} = HTTPClient.post href, Poison.encode!(data)
-        case response do
-          %Response{status_code: 200, body: body} ->
+        case HTTPClient.post(href, Poison.encode!(data)) do
+          {:ok, %Response{status_code: 200, body: body}} ->
             {:ok, Member.new(body)}
 
-          %Response{status_code: _, body: body} ->
+          {:ok, %Response{status_code: _, body: body}} ->
             {:error, body}
+
+          {:error, error} ->
+            {:error, error}
         end
 
-      %Response{status_code: _, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
