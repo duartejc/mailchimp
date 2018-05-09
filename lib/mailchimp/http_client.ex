@@ -56,7 +56,13 @@ defmodule Mailchimp.HTTPClient do
       def process_response_body(body), do:  _process_response_body(body)
   end
 
-  defp _process_response_body(body), do: Poison.decode!(body, keys: :atoms)
+  defp _process_response_body(body) do
+    if (body === "") do
+      body
+    else
+      Poison.decode!(body, keys: :atoms)
+    end
+  end
 
   @doc """
   Add Auth Header to every request that has none already
