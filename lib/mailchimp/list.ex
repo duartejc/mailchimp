@@ -94,7 +94,7 @@ defmodule Mailchimp.List do
 
     case response do
       %Response{status_code: 204} ->
-        {:ok}
+        {:ok, email}
 
       %Response{status_code: _, body: body} ->
         {:error, body}
