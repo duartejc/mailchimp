@@ -15,7 +15,7 @@ defmodule Mailchimp.Config do
       "your apikey-us12"
 
   """
-  @spec api_key!() :: String.t | no_return
+  @spec api_key!() :: String.t() | no_return
   def api_key!, do: Application.fetch_env!(:mailchimp, :api_key)
 
   @doc """
@@ -32,7 +32,7 @@ defmodule Mailchimp.Config do
       "3.0"
 
   """
-  @spec api_version() :: String.t
+  @spec api_version() :: String.t()
   def api_version, do: Application.get_env(:mailchimp, :api_version, @default_api_version)
 
   @doc """
@@ -45,7 +45,7 @@ defmodule Mailchimp.Config do
       "us12"
 
   """
-  @spec shard!() :: String.t | no_return
+  @spec shard!() :: String.t() | no_return
   def shard! do
     api_key!()
     |> String.split("-", parts: 2)
@@ -63,7 +63,7 @@ defmodule Mailchimp.Config do
       "https://us12.api.mailchimp.com/3.0/"
 
   """
-  @spec root_endpoint!() :: String.t | no_return
+  @spec root_endpoint!() :: String.t() | no_return
   def root_endpoint! do
     "https://#{shard!()}.api.mailchimp.com/#{api_version()}/"
   end
