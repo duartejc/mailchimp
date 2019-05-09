@@ -1,5 +1,5 @@
 defmodule Mailchimp.List do
-  alias HTTPoison.Response
+  alias HTTPoison.{Error, Response}
   alias Mailchimp.HTTPClient
   alias Mailchimp.Link
   alias Mailchimp.Member
@@ -46,14 +46,15 @@ defmodule Mailchimp.List do
   end
 
   def members(%__MODULE__{links: %{"members" => %Link{href: href}}}, query_params) do
-    {:ok, response} = HTTPClient.get(href, [], params: query_params)
-
-    case response do
-      %Response{status_code: 200, body: body} ->
+    case HTTPClient.get(href, [], params: query_params) do
+      {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, Enum.map(body.members, &Member.new(&1))}
 
-      %Response{status_code: _, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, %Error{reason: reason}} ->
+        {:error, reason}
     end
   end
 
