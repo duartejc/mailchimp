@@ -30,8 +30,8 @@ defmodule Mailchimp.Batch do
     end
   end
 
-  def batches() do
-    case HTTPClient.get("/batches") do
+  def batches(query_params \\ %{}) do
+    case HTTPClient.get("/batches", [], params: query_params) do
       {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, body}
 
