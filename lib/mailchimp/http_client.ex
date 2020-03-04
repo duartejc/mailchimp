@@ -60,7 +60,7 @@ defmodule Mailchimp.HTTPClient do
     if (body === "") do
       body
     else
-      Poison.decode!(body, keys: :atoms)
+      Jason.decode!(body, keys: :atoms)
     end
   end
 

@@ -22,7 +22,7 @@ defmodule Mailchimp.Campaign.Content do
   end
 
   def update(%__MODULE__{links: %{"self" => %Link{href: href}}}, attrs \\ %{}) do
-    {:ok, response} = HTTPClient.put(href, Poison.encode!(attrs))
+    {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, new(body)}

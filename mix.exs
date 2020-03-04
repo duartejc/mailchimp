@@ -2,31 +2,33 @@ defmodule Mailchimp.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :mailchimp,
-     version: "0.0.7",
-     elixir: "~> 1.4",
-     aliases: aliases(),
-     description: description(),
-     package: package(),
-     elixirc_paths: elixirc_paths(Mix.env),
-     source_url: "https://github.com/duartejc/mailchimp",
-     deps: deps(),
-     docs: [readme: "README.md", main: "README"]]
+    [
+      app: :mailchimp,
+      version: "0.0.7",
+      elixir: "~> 1.4",
+      aliases: aliases(),
+      description: description(),
+      package: package(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      source_url: "https://github.com/duartejc/mailchimp",
+      deps: deps(),
+      docs: [readme: "README.md", main: "README"]
+    ]
   end
 
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger]
     ]
   end
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_),     do: ["lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp aliases do
     [
-      test: ["mailchimp.flush_dumps", "test"],
+      test: ["mailchimp.flush_dumps", "test"]
     ]
   end
 
@@ -37,16 +39,20 @@ defmodule Mailchimp.Mixfile do
   end
 
   defp deps do
-    [{:httpoison, "~> 1.0"},
-     {:poison, "~> 3.1"},
-     {:mock, "~> 0.2.0", only: :test},
-     {:ex_doc, ">= 0.0.0", only: :dev}]
+    [
+      {:httpoison, "~> 1.6"},
+      {:jason, "~> 1.1"},
+      {:mock, "~> 0.2.0", only: :test},
+      {:ex_doc, ">= 0.0.0", only: :dev}
+    ]
   end
 
   defp package do
-    [files: ["lib", "mix.exs", "README.md", "LICENSE"],
-     maintainers: ["Jean Duarte"],
-     licenses: ["MIT"],
-     links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}]
+    [
+      files: ["lib", "mix.exs", "README.md", "LICENSE"],
+      maintainers: ["Jean Duarte"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}
+    ]
   end
 end

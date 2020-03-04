@@ -140,7 +140,7 @@ defmodule Mailchimp.List do
             merge_fields: merge_fields
           })
 
-        case HTTPClient.post(href, Poison.encode!(data)) do
+        case HTTPClient.post(href, Jason.encode!(data)) do
           {:ok, %Response{status_code: 200, body: body}} ->
             {:ok, Member.new(body)}
 

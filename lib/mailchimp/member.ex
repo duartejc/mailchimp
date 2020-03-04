@@ -36,7 +36,7 @@ defmodule Mailchimp.Member do
     |> Map.update!(:status, &Atom.to_string/1)
     |> Map.delete(:__struct__)
 
-    {:ok, response} = HTTPClient.put(href, Poison.encode!(attrs))
+    {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
 
     case response do
       %Response{status_code: 200, body: body} ->

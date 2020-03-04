@@ -74,7 +74,7 @@ defmodule Mailchimp.Campaign do
   end
 
   def create(type, attrs \\ %{}) when type in [:regular, :plaintext, :absplit, :rss, :variate] do
-    {:ok, response} = HTTPClient.post("/campaigns", Poison.encode!(Map.put(attrs, :type, type)))
+    {:ok, response} = HTTPClient.post("/campaigns", Jason.encode!(Map.put(attrs, :type, type)))
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, new(body)}
