@@ -22,7 +22,8 @@ defmodule Mailchimp.Member do
             timestamp_signup: nil,
             unique_email_id: nil,
             vip: nil,
-            links: nil
+            links: nil,
+            tags: []
 
   def new(attributes) do
     %__MODULE__{
@@ -45,7 +46,8 @@ defmodule Mailchimp.Member do
       timestamp_signup: attributes[:timestamp_signup],
       unique_email_id: attributes[:unique_email_id],
       vip: attributes[:vip],
-      links: Link.get_links_from_attributes(attributes)
+      links: Link.get_links_from_attributes(attributes),
+      tags: attributes[:tags]
     }
   end
 
