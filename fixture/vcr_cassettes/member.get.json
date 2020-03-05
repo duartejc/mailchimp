@@ -3,7 +3,7 @@
     "request": {
       "body": "",
       "headers": {
-        "Authorization": "Basic 4f9148925307f1ebad1a1db2bde0789a-us19"
+        "Authorization": "Basic your-api-key-us19"
       },
       "method": "get",
       "options": [],
@@ -32,7 +32,7 @@
     "request": {
       "body": "",
       "headers": {
-        "Authorization": "Basic 4f9148925307f1ebad1a1db2bde0789a-us19"
+        "Authorization": "Basic your-api-key-us19"
       },
       "method": "get",
       "options": [],
@@ -61,7 +61,7 @@
     "request": {
       "body": "",
       "headers": {
-        "Authorization": "Basic 4f9148925307f1ebad1a1db2bde0789a-us19"
+        "Authorization": "Basic your-api-key-us19"
       },
       "method": "get",
       "options": [],
