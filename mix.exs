@@ -4,12 +4,10 @@ defmodule Mailchimp.Mixfile do
   def project do
     [
       app: :mailchimp,
-      version: "0.0.7",
-      elixir: "~> 1.4",
-      aliases: aliases(),
+      version: "0.1.0",
+      elixir: "~> 1.7",
       description: description(),
       package: package(),
-      elixirc_paths: elixirc_paths(Mix.env()),
       source_url: "https://github.com/duartejc/mailchimp",
       deps: deps(),
       docs: [readme: "README.md", main: "README"]
@@ -19,16 +17,6 @@ defmodule Mailchimp.Mixfile do
   def application do
     [
       extra_applications: [:logger]
-    ]
-  end
-
-  # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
-
-  defp aliases do
-    [
-      test: ["mailchimp.flush_dumps", "test"]
     ]
   end
 
@@ -42,8 +30,8 @@ defmodule Mailchimp.Mixfile do
     [
       {:httpoison, "~> 1.6"},
       {:jason, "~> 1.1"},
-      {:mock, "~> 0.2.0", only: :test},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:exvcr, "~> 0.11", only: :test}
     ]
   end
 

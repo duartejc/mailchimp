@@ -1,0 +1,31 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "Basic 4f9148925307f1ebad1a1db2bde0789a-us19"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://us19.api.mailchimp.com/3.0/"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"account_id\":\"839f799873bd858fc5a415acc\",\"login_id\":\"143148122\",\"account_name\":\"Clockk dev\",\"email\":\"eric@clockk.com\",\"first_name\":\"Eric\",\"last_name\":\"Froese\",\"username\":\"eric@clockk.com\",\"avatar_url\":\"https://secure.gravatar.com/avatar/fcd97cb5ce7fe81eab17bc91dfeec8df.jpg?s=300&d=https%3A%2F%2Fcdn-images.mailchimp.com%2Ficons%2Fletter-avatars%2Fe.png\",\"role\":\"owner\",\"member_since\":\"2020-03-04T18:43:59+00:00\",\"pricing_plan_type\":\"forever_free\",\"first_payment\":\"\",\"account_timezone\":\"US/Eastern\",\"account_industry\":\"\",\"contact\":{\"company\":\"Clockk dev\",\"addr1\":\"100-1505 Barrington St.\",\"addr2\":\"\",\"city\":\"Halifax\",\"state\":\"NS\",\"zip\":\"B3J 3K5\",\"country\":\"CA\"},\"pro_enabled\":false,\"last_login\":\"2020-03-04T20:16:17+00:00\",\"total_subscribers\":2,\"_links\":[{\"rel\":\"self\",\"href\":\"https://us19.api.mailchimp.com/3.0/\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Root.json\"},{\"rel\":\"lists\",\"href\":\"https://us19.api.mailchimp.com/3.0/lists\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Lists/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Lists.json\"},{\"rel\":\"reports\",\"href\":\"https://us19.api.mailchimp.com/3.0/reports\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Reports/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Reports.json\"},{\"rel\":\"conversations\",\"href\":\"https://us19.api.mailchimp.com/3.0/conversations\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Conversations/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Conversations.json\"},{\"rel\":\"campaigns\",\"href\":\"https://us19.api.mailchimp.com/3.0/campaigns\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Campaigns/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Campaigns.json\"},{\"rel\":\"automations\",\"href\":\"https://us19.api.mailchimp.com/3.0/automations\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Automations/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Automations.json\"},{\"rel\":\"templates\",\"href\":\"https://us19.api.mailchimp.com/3.0/templates\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Templates/Collection.json\",\"schema\":\"https://us19.api.mailchimp.com/schema/3.0/CollectionLinks/Templates.json\"},{\"rel\":\"file-manager\",\"href\":\"https://us19.api.mailchimp.com/3.0/file-manager\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/FileManager/Namespace.json\"},{\"rel\":\"authorized-apps\",\"href\":\"https://us19.api.mailchimp.com/3.0/authorized-apps\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/AuthorizedApps/Collection.json\"},{\"rel\":\"batches\",\"href\":\"https://us19.api.mailchimp.com/3.0/batches\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Batches/Collection.json\"},{\"rel\":\"template-folders\",\"href\":\"https://us19.api.mailchimp.com/3.0/template-folders\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/TemplateFolders/Collection.json\"},{\"rel\":\"campaign-folders\",\"href\":\"https://us19.api.mailchimp.com/3.0/campaign-folders\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/CampaignFolders/Collection.json\"},{\"rel\":\"ecommerce\",\"href\":\"https://us19.api.mailchimp.com/3.0/ecommerce\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Ecommerce/Namespace.json\"},{\"rel\":\"ping\",\"href\":\"https://us19.api.mailchimp.com/3.0/ping\",\"method\":\"GET\",\"targetSchema\":\"https://us19.api.mailchimp.com/schema/3.0/Ping/Namespace.json\"}]}",
+      "headers": {
+        "Server": "openresty",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "3708",
+        "Vary": "Accept-Encoding",
+        "X-Request-Id": "ad5e86da-c8d0-45a5-a449-2b685faefcd2",
+        "Link": "<https://us19.api.mailchimp.com/schema/3.0/Root.json>; rel=\"describedBy\"",
+        "Date": "Wed, 04 Mar 2020 21:52:42 GMT",
+        "Connection": "keep-alive",
+        "Set-Cookie": "_AVESTA_ENVIRONMENT=prod; path=/"
+      },
+      "status_code": 200,
+      "type": "ok"
+    }
+  }
+]

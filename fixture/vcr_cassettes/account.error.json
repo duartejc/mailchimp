@@ -1,0 +1,30 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "Basic 4f9148925307f1ebad1a1db2bde0789a-us19"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://us19.api.mailchimp.com/3.0/1234"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"type\":\"http://developer.mailchimp.com/documentation/mailchimp/guides/error-glossary/\",\"title\":\"Resource Not Found\",\"status\":404,\"detail\":\"Invalid path\",\"instance\":\"1001b536-09d6-437e-b2fd-07d274e76d3e\"}",
+      "headers": {
+        "Server": "openresty",
+        "Content-Type": "application/problem+json; charset=utf-8",
+        "Content-Length": "204",
+        "X-Request-Id": "1001b536-09d6-437e-b2fd-07d274e76d3e",
+        "Link": "<https://us19.api.mailchimp.com/schema/3.0/ProblemDetailDocument.json>; rel=\"describedBy\"",
+        "Date": "Wed, 04 Mar 2020 21:52:40 GMT",
+        "Connection": "keep-alive",
+        "Set-Cookie": "_AVESTA_ENVIRONMENT=prod; path=/"
+      },
+      "status_code": 404,
+      "type": "ok"
+    }
+  }
+]
