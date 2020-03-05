@@ -3,7 +3,26 @@ defmodule Mailchimp.Member do
   alias HTTPoison.Response
   alias Mailchimp.HTTPClient
 
-  defstruct email_address: nil, email_client: nil, email_type: nil, id: nil, ip_opt: nil, ip_signup: nil, language: nil, last_changed: nil, list_id: nil, location: nil, member_rating: nil, merge_fields: nil, stats: nil, status: nil, status_if_new: nil, timestamp_opt: nil, timestamp_signup: nil, unique_email_id: nil, vip: nil, links: nil
+  defstruct email_address: nil,
+            email_client: nil,
+            email_type: nil,
+            id: nil,
+            ip_opt: nil,
+            ip_signup: nil,
+            language: nil,
+            last_changed: nil,
+            list_id: nil,
+            location: nil,
+            member_rating: nil,
+            merge_fields: nil,
+            stats: nil,
+            status: nil,
+            status_if_new: nil,
+            timestamp_opt: nil,
+            timestamp_signup: nil,
+            unique_email_id: nil,
+            vip: nil,
+            links: nil
 
   def new(attributes) do
     %__MODULE__{
@@ -31,10 +50,11 @@ defmodule Mailchimp.Member do
   end
 
   def update(user = %__MODULE__{links: %{"upsert" => %Link{href: href}}}) do
-    attrs = user
-    |> Map.delete(:links)
-    |> Map.update!(:status, &Atom.to_string/1)
-    |> Map.delete(:__struct__)
+    attrs =
+      user
+      |> Map.delete(:links)
+      |> Map.update!(:status, &Atom.to_string/1)
+      |> Map.delete(:__struct__)
 
     {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
 

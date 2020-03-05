@@ -19,6 +19,7 @@ defmodule Mailchimp.List.InterestCategory do
 
   def interests(%__MODULE__{links: %{"interests" => %Link{href: href}}}) do
     {:ok, response} = HTTPClient.get(href)
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.interests, &Interest.new(&1))}

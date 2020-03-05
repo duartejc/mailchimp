@@ -1,14 +1,14 @@
 defmodule Mailchimp.Campaign.Content do
   alias Mailchimp.Link
-    alias HTTPoison.Response
-    alias Mailchimp.HTTPClient
+  alias HTTPoison.Response
+  alias Mailchimp.HTTPClient
 
   defstruct [
     :variate_contents,
     :plain_text,
     :html,
     :archive_html,
-    :links,
+    :links
   ]
 
   def new(attributes) do
@@ -17,12 +17,13 @@ defmodule Mailchimp.Campaign.Content do
       plain_text: attributes[:plain_text],
       html: attributes[:html],
       archive_html: attributes[:archive_html],
-      links: Link.get_links_from_attributes(attributes),
+      links: Link.get_links_from_attributes(attributes)
     }
   end
 
   def update(%__MODULE__{links: %{"self" => %Link{href: href}}}, attrs \\ %{}) do
     {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, new(body)}

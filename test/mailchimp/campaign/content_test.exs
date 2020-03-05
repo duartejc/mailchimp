@@ -19,12 +19,12 @@ defmodule Mailchimp.Campaign.ContentTest do
 
         assert {:ok, %Content{}} =
                  Content.update(content, %{
-                   template: %{id: 2000122, sections: %{content: "Fooooobar"}}
+                   template: %{id: 2_000_122, sections: %{content: "Fooooobar"}}
                  })
 
         assert %Content{} =
                  Content.update!(content, %{
-                   template: %{id: 2000122, sections: %{content: "Fooooobar"}}
+                   template: %{id: 2_000_122, sections: %{content: "Fooooobar"}}
                  })
       end
     end

@@ -1,5 +1,4 @@
 defmodule Mailchimp.Campaign.Tracking do
-
   defstruct [
     :opens,
     :html_clicks,
@@ -8,7 +7,7 @@ defmodule Mailchimp.Campaign.Tracking do
     :ecomm360,
     :google_analytics,
     :clicktale,
-    :salesforce,
+    :salesforce
   ]
 
   def new(attributes) do
@@ -20,7 +19,7 @@ defmodule Mailchimp.Campaign.Tracking do
       ecomm360: attributes[:ecomm360],
       google_analytics: attributes[:google_analytics],
       clicktale: attributes[:clicktale],
-      salesforce: attributes[:salesforce],
+      salesforce: attributes[:salesforce]
     }
   end
 end
