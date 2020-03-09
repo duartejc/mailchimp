@@ -12,14 +12,7 @@ def deps do
 end
 ```
 
-and run `$ mix deps.get`. Now, list the `:mailchimp` application as your
-application dependency:
-
-```elixir
-def application do
-  [applications: [:mailchimp]]
-end
-```
+and run `$ mix deps.get`
 
 ## Usage
 
@@ -35,11 +28,6 @@ or
 ```elixir
   Application.put_env(:mailchimp, :api_key, "your apikey-us12")
 ```
-
-
-Start a new process:
-
-    Mailchimp.start_link
 
 ### Getting Account Details
 
