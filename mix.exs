@@ -38,7 +38,7 @@ defmodule Mailchimp.Mixfile do
   defp package do
     [
       files: ["lib", "mix.exs", "README.md", "LICENSE"],
-      maintainers: ["Jean Duarte"],
+      maintainers: ["Jean Duarte", "Eric Froese"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/duartejc/mailchimp"}
     ]
