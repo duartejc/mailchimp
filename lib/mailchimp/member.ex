@@ -72,4 +72,23 @@ defmodule Mailchimp.Member do
     {:ok, user} = update(user)
     user
   end
+
+  def update_tags(user = %__MODULE__{links: %{"update" => %Link{href: href}}, tags: tags})
+      when is_list(tags) do
+    attrs = %{tags: tags}
+    {:ok, response} = HTTPClient.post(href <> "/tags", Jason.encode!(attrs))
+
+    case response do
+      %Response{status_code: 204, body: body} ->
+        {:ok, user}
+
+      %Response{status_code: code, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def update_tags!(user) do
+    {:ok, user} = update_tags(user)
+    user
+  end
 end
