@@ -17,8 +17,8 @@ defmodule Mailchimp.ListTest do
         account = Account.get!()
         [list] = Account.lists!(account)
 
-        {:ok, %Member{status: :subscribed, merge_fields: %{LNAME: "Test"}, language: "de"}} =
-          List.create_member(list, "mailchimp1-test@elixir.com", :subscribed, %{LNAME: "Test"}, %{
+        {:ok, %Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}} =
+          List.create_member(list, "mailchimp1-test@elixir.com", "subscribed", %{LNAME: "Test"}, %{
             language: "de"
           })
 
@@ -26,7 +26,7 @@ defmodule Mailchimp.ListTest do
           List.create_member!(
             list,
             "mailchimp1-test@elixir.com",
-            :subscribed,
+            "subscribed",
             %{LNAME: "Test"},
             %{language: "de"}
           )
@@ -40,7 +40,7 @@ defmodule Mailchimp.ListTest do
         account = Account.get!()
         [list] = Account.lists!(account)
 
-        {:ok, %Member{status: :subscribed, merge_fields: %{LNAME: "Test"}, language: "de"}} =
+        {:ok, %Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}} =
           List.get_member(list, "mailchimp1-test@elixir.com")
 
         %Member{} = List.get_member!(list, "mailchimp1-test@elixir.com")

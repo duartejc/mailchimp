@@ -127,7 +127,7 @@ defmodule Mailchimp.List do
         additional_data \\ %{}
       )
       when is_binary(email_address) and is_map(merge_fields) and
-             status in [:subscribed, :pending, :unsubscribed, :cleaned] do
+             status in ["subscribed", "pending", "unsubscribed", "cleaned"] do
     case HTTPClient.get(href) do
       {:ok, %Response{status_code: 200, body: body}} ->
         links = Link.get_links_from_attributes(body)

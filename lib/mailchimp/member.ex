@@ -40,7 +40,7 @@ defmodule Mailchimp.Member do
       member_rating: attributes[:member_rating],
       merge_fields: attributes[:merge_fields],
       stats: attributes[:stats],
-      status: String.to_atom(attributes[:status]),
+      status: attributes[:status],
       status_if_new: attributes[:status_if_new],
       timestamp_opt: attributes[:timestamp_opt],
       timestamp_signup: attributes[:timestamp_signup],
@@ -55,7 +55,6 @@ defmodule Mailchimp.Member do
     attrs =
       user
       |> Map.delete(:links)
-      |> Map.update!(:status, &Atom.to_string/1)
       |> Map.delete(:__struct__)
 
     {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
