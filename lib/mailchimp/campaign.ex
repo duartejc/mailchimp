@@ -24,14 +24,16 @@ defmodule Mailchimp.Campaign do
     :social_card,
     :report_summary,
     :delivery_status,
-    :links,
+    :links
   ]
 
   def new(attributes) do
     {:ok, create_time, _} = DateTime.from_iso8601(attributes[:create_time])
-    send_time = if attributes[:send_time] do
-      DateTime.from_iso8601(attributes[:send_time])
-    end
+
+    send_time =
+      if attributes[:send_time] do
+        DateTime.from_iso8601(attributes[:send_time])
+      end
 
     %__MODULE__{
       id: attributes[:id],
@@ -57,8 +59,11 @@ defmodule Mailchimp.Campaign do
     }
   end
 
+  def list(), do: list([])
+
   def list(query_params) do
     {:ok, response} = HTTPClient.get("/campaigns", [], params: query_params)
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.campaigns, &new(&1))}
@@ -74,7 +79,8 @@ defmodule Mailchimp.Campaign do
   end
 
   def create(type, attrs \\ %{}) when type in [:regular, :plaintext, :absplit, :rss, :variate] do
-    {:ok, response} = HTTPClient.post("/campaigns", Poison.encode!(Map.put(attrs, :type, type)))
+    {:ok, response} = HTTPClient.post("/campaigns", Jason.encode!(Map.put(attrs, :type, type)))
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, new(body)}
@@ -91,6 +97,7 @@ defmodule Mailchimp.Campaign do
 
   def content(%__MODULE__{links: %{"content" => %Link{href: href}}}) do
     {:ok, response} = HTTPClient.get(href)
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Content.new(body)}

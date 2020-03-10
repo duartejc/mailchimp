@@ -56,7 +56,7 @@ defmodule Mailchimp.Template do
   end
 
   def create(attrs \\ %{}) do
-    case HTTPClient.post("/templates", Poison.encode!(attrs)) do
+    case HTTPClient.post("/templates", Jason.encode!(attrs)) do
       {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, new(body)}
 

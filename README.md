@@ -8,18 +8,11 @@ First, add MailChimp lib to your `mix.exs` dependencies:
 
 ```elixir
 def deps do
-  [{:mailchimp, "~> 0.0.7"}]
+  [{:mailchimp, "~> 0.1.0"}]
 end
 ```
 
-and run `$ mix deps.get`. Now, list the `:mailchimp` application as your
-application dependency:
-
-```elixir
-def application do
-  [applications: [:mailchimp]]
-end
-```
+and run `$ mix deps.get`
 
 ## Usage
 
@@ -36,11 +29,6 @@ or
   Application.put_env(:mailchimp, :api_key, "your apikey-us12")
 ```
 
-
-Start a new process:  
-
-    Mailchimp.start_link
-
 ### Getting Account Details
 
     Mailchimp.Account.get!()
@@ -55,4 +43,4 @@ Start a new process:
 
 ### Creating a new Campaign
 
-    Mailchimp.Campaign.create!(:regular)     
+    Mailchimp.Campaign.create!(:regular)

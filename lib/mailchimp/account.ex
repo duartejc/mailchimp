@@ -4,7 +4,12 @@ defmodule Mailchimp.Account do
   alias Mailchimp.Link
   alias Mailchimp.List
 
-  defstruct account_id: nil, account_name: nil, contact: nil, last_login: nil, total_subscribers: 0, links: []
+  defstruct account_id: nil,
+            account_name: nil,
+            contact: nil,
+            last_login: nil,
+            total_subscribers: 0,
+            links: []
 
   def new(attributes) do
     %__MODULE__{
@@ -17,8 +22,8 @@ defmodule Mailchimp.Account do
     }
   end
 
-  def get do
-    case HTTPClient.get("/") do
+  def get(override_url \\ "/") do
+    case HTTPClient.get(override_url) do
       {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, __MODULE__.new(body)}
 
@@ -30,13 +35,14 @@ defmodule Mailchimp.Account do
     end
   end
 
-  def get! do
-    {:ok, account} = get()
+  def get!(override_url \\ "/") do
+    {:ok, account} = get(override_url)
     account
   end
 
-  def lists(%__MODULE__{links: %{"lists" => %Link{href: href}}}, query_params) do
+  def lists(%__MODULE__{links: %{"lists" => %Link{href: href}}}, query_params \\ %{}) do
     {:ok, response} = HTTPClient.get(href, [], params: query_params)
+
     case response do
       %Response{status_code: 200, body: body} ->
         {:ok, Enum.map(body.lists, &List.new(&1))}

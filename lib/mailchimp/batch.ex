@@ -3,7 +3,7 @@ defmodule Mailchimp.Batch do
   alias Mailchimp.HTTPClient
 
   def create_batch(operations) when is_list(operations) do
-    case HTTPClient.post("/batches", Poison.encode!(%{operations: operations})) do
+    case HTTPClient.post("/batches", Jason.encode!(%{operations: operations})) do
       {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, body}
 

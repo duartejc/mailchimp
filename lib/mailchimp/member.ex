@@ -3,7 +3,27 @@ defmodule Mailchimp.Member do
   alias HTTPoison.Response
   alias Mailchimp.HTTPClient
 
-  defstruct email_address: nil, email_client: nil, email_type: nil, id: nil, ip_opt: nil, ip_signup: nil, language: nil, last_changed: nil, list_id: nil, location: nil, member_rating: nil, merge_fields: nil, stats: nil, status: nil, status_if_new: nil, timestamp_opt: nil, timestamp_signup: nil, unique_email_id: nil, vip: nil, links: nil
+  defstruct email_address: nil,
+            email_client: nil,
+            email_type: nil,
+            id: nil,
+            ip_opt: nil,
+            ip_signup: nil,
+            language: nil,
+            last_changed: nil,
+            list_id: nil,
+            location: nil,
+            member_rating: nil,
+            merge_fields: nil,
+            stats: nil,
+            status: nil,
+            status_if_new: nil,
+            timestamp_opt: nil,
+            timestamp_signup: nil,
+            unique_email_id: nil,
+            vip: nil,
+            links: nil,
+            tags: []
 
   def new(attributes) do
     %__MODULE__{
@@ -20,23 +40,24 @@ defmodule Mailchimp.Member do
       member_rating: attributes[:member_rating],
       merge_fields: attributes[:merge_fields],
       stats: attributes[:stats],
-      status: String.to_atom(attributes[:status]),
+      status: attributes[:status],
       status_if_new: attributes[:status_if_new],
       timestamp_opt: attributes[:timestamp_opt],
       timestamp_signup: attributes[:timestamp_signup],
       unique_email_id: attributes[:unique_email_id],
       vip: attributes[:vip],
-      links: Link.get_links_from_attributes(attributes)
+      links: Link.get_links_from_attributes(attributes),
+      tags: attributes[:tags]
     }
   end
 
   def update(user = %__MODULE__{links: %{"upsert" => %Link{href: href}}}) do
-    attrs = user
-    |> Map.delete(:links)
-    |> Map.update!(:status, &Atom.to_string/1)
-    |> Map.delete(:__struct__)
+    attrs =
+      user
+      |> Map.delete(:links)
+      |> Map.delete(:__struct__)
 
-    {:ok, response} = HTTPClient.put(href, Poison.encode!(attrs))
+    {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
 
     case response do
       %Response{status_code: 200, body: body} ->
@@ -49,6 +70,25 @@ defmodule Mailchimp.Member do
 
   def update!(user) do
     {:ok, user} = update(user)
+    user
+  end
+
+  def update_tags(user = %__MODULE__{links: %{"update" => %Link{href: href}}, tags: tags})
+      when is_list(tags) do
+    attrs = %{tags: tags}
+    {:ok, response} = HTTPClient.post(href <> "/tags", Jason.encode!(attrs))
+
+    case response do
+      %Response{status_code: 204, body: body} ->
+        {:ok, user}
+
+      %Response{status_code: code, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def update_tags!(user) do
+    {:ok, user} = update_tags(user)
     user
   end
 end
