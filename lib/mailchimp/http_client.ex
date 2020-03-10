@@ -14,26 +14,17 @@ defmodule Mailchimp.HTTPClient do
 
       iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
       iex> Application.delete_env(:mailchimp, :api_version)
-      iex> Mailchimp.HTTPClient.process_url("test")
+      iex> Mailchimp.HTTPClient.process_request_url("test")
       "https://us12.api.mailchimp.com/3.0/test"
 
       iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
       iex> Application.delete_env(:mailchimp, :api_version)
-      iex> Mailchimp.HTTPClient.process_url("https://us12.api.mailchimp.com/3.0/test")
+      iex> Mailchimp.HTTPClient.process_request_url("https://us12.api.mailchimp.com/3.0/test")
       "https://us12.api.mailchimp.com/3.0/test"
 
   """
-  case Mix.env() do
-    :test ->
-      def process_url(url) do
-        _process_url(url)
-      end
 
-    _ ->
-      def process_url(url), do: _process_url(url)
-  end
-
-  def _process_url(url) do
+  def process_request_url(url) do
     root = Config.root_endpoint!()
 
     cond do
@@ -48,13 +39,7 @@ defmodule Mailchimp.HTTPClient do
     end
   end
 
-  # Make it easier to mock Responses
-  case Mix.env() do
-    _ ->
-      def process_response_body(body), do: _process_response_body(body)
-  end
-
-  defp _process_response_body(body) do
+  def process_response_body(body) do
     if body === "" do
       body
     else
