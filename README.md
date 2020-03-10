@@ -16,7 +16,7 @@ and run `$ mix deps.get`
 
 ## Usage
 
-Put your API key in your *config.exs* file:
+Put your API key in your `config.exs` file:
 
 ```elixir
 config :mailchimp,
@@ -39,7 +39,7 @@ or
 
 ### Adding a Member to a List
 
-    Mailchimp.List.create_member(list, "test@email.com", :subscribed, %{}, %{})
+    Mailchimp.List.create_member(list, "test@email.com", "subscribed", %{}, %{})
 
 ### Creating a new Campaign
 
