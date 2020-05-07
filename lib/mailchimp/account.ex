@@ -56,4 +56,24 @@ defmodule Mailchimp.Account do
     {:ok, lists} = lists(account, query_params)
     lists
   end
+
+  @doc """
+    Fetch a List from an ID
+  """
+  def get_list(%__MODULE__{links: %{"lists" => %Link{href: href}}}, list_id, query_params \\ %{}) do
+    {:ok, response} = HTTPClient.get(href <> "/#{list_id}", [], params: query_params)
+
+    case response do
+      %Response{status_code: 200, body: body} ->
+        {:ok, List.new(body)}
+
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
+  def get_list!(account, list_id, query_params \\ %{}) do
+    {:ok, list} = get_list(account, list_id, query_params)
+    list
+  end
 end
