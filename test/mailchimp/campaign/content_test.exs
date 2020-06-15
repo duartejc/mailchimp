@@ -17,6 +17,8 @@ defmodule Mailchimp.Campaign.ContentTest do
         assert [campaign | _] = Campaign.list!()
         assert content = Campaign.content!(campaign)
 
+        # NOTE: This fails because the "links" inside the campaign reference the web_id property which always returns a 404 when accessed via the Mailchimp API
+
         assert {:ok, %Content{}} =
                  Content.update(content, %{
                    template: %{id: 2_000_122, sections: %{content: "Fooooobar"}}
