@@ -91,4 +91,10 @@ defmodule Mailchimp.Member do
     {:ok, user} = update_tags(user)
     user
   end
+
+  def delete(user = %__MODULE__{links: %{"delete" => %Link{href: href}}}) do
+    {:ok, %HTTPoison.Response{status_code: status_code}} = HTTPClient.delete(href)
+
+    {:ok, status_code}
+  end
 end
