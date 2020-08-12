@@ -4,6 +4,7 @@ defmodule Mailchimp.Config do
   """
 
   @default_api_version "3.0"
+  @default_api_endpoint "api.mailchimp.com"
 
   @doc """
   Return configured API Key
@@ -36,6 +37,23 @@ defmodule Mailchimp.Config do
   def api_version, do: Application.get_env(:mailchimp, :api_version, @default_api_version)
 
   @doc """
+  Return configured API endpoint
+
+  ### Examples
+
+    iex> Application.put_env(:mailchimp, :api_endpoint, "api.mc.local")
+    iex> Mailchimp.Config.api_endpoint()
+    "api.mc.local"
+
+    iex> Application.delete_env(:mailchimp, :api_endpoint)
+    iex> Mailchimp.Config.api_endpoint()
+    "api.mailchimp.com"
+
+  """
+  @spec api_endpoint() :: String.t()
+  def api_endpoint, do: Application.get_env(:mailchimp, :api_endpoint, @default_api_endpoint)
+
+  @doc """
   Return configured API Version
 
   ### Examples
@@ -65,6 +83,6 @@ defmodule Mailchimp.Config do
   """
   @spec root_endpoint!() :: String.t() | no_return
   def root_endpoint! do
-    "https://#{shard!()}.api.mailchimp.com/#{api_version()}/"
+    "https://#{shard!()}.#{api_endpoint()}/#{api_version()}/"
   end
 end
