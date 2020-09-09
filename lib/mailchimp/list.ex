@@ -164,6 +164,45 @@ defmodule Mailchimp.List do
     member
   end
 
+  def create_members(
+        %__MODULE__{links: %{"self" => %Link{href: href}}},
+        email_addresses,
+        status,
+        merge_fields \\ %{},
+        additional_data \\ %{}
+      ) do
+    members =
+      for email_address <- email_addresses do
+        %{
+          email_address: email_address,
+          status: status,
+          merge_fields: merge_fields
+        }
+      end
+
+    data = Map.merge(additional_data, %{members: members, update_existing: false})
+
+    case HTTPClient.post(href, Jason.encode!(data)) do
+      {:ok, %Response{status_code: 200, body: body}} ->
+        members =
+          Map.get(body, :new_members, [])
+          |> Enum.map(fn member -> Member.new(member) end)
+
+        {:ok, members}
+
+      {:ok, %Response{status_code: _, body: body}} ->
+        {:error, body}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def create_members!(list, email_addresses, status, merge_fields \\ %{}, additional_data \\ %{}) do
+    {:ok, members} = create_members(list, email_addresses, status, merge_fields, additional_data)
+    members
+  end
+
   defp md5(string) do
     :crypto.hash(:md5, string)
     |> Base.encode16()
