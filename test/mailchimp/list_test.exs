@@ -18,14 +18,49 @@ defmodule Mailchimp.ListTest do
         [list] = Account.lists!(account)
 
         {:ok, %Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}} =
-          List.create_member(list, "mailchimp1-test@elixir.com", "subscribed", %{LNAME: "Test"}, %{
-            language: "de"
-          })
+          List.create_member(
+            list,
+            "mailchimp1-test@elixir.com",
+            "subscribed",
+            %{LNAME: "Test"},
+            %{
+              language: "de"
+            }
+          )
 
         %Member{} =
           List.create_member!(
             list,
             "mailchimp1-test@elixir.com",
+            "subscribed",
+            %{LNAME: "Test"},
+            %{language: "de"}
+          )
+      end
+    end
+  end
+
+  describe "create_members/5" do
+    test "creates members" do
+      use_cassette "members.create" do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+
+        {:ok, [%Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}]} =
+          List.create_members(
+            list,
+            ["mailchimp1-test@elixir.com"],
+            "subscribed",
+            %{LNAME: "Test"},
+            %{
+              language: "de"
+            }
+          )
+
+        [%Member{}] =
+          List.create_members!(
+            list,
+            ["mailchimp1-test@elixir.com"],
             "subscribed",
             %{LNAME: "Test"},
             %{language: "de"}
