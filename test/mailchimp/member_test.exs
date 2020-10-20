@@ -5,7 +5,9 @@ defmodule Mailchimp.MemberTest do
   alias Mailchimp.{Account, List, Member}
 
   setup_all do
+    Application.put_env(:mailchimp, :api_key, "your apikey-us19")
     HTTPoison.start()
+    on_exit(fn -> Application.delete_env(:mailchimp, :api_key) end)
   end
 
   describe "update/1" do
