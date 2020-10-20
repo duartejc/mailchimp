@@ -10,6 +10,7 @@ defmodule Mailchimp.Campaign.ContentTest do
   end
 
   describe "update/2" do
+    @tag :skip
     test "updates content" do
       use_cassette "content.update" do
         assert [campaign | _] = Campaign.list!()
