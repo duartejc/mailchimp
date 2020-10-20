@@ -5,8 +5,6 @@ defmodule Mailchimp.Campaign.ContentTest do
   alias Mailchimp.Campaign
   alias Mailchimp.Campaign.Content
 
-  doctest Campaign
-
   setup_all do
     HTTPoison.start()
   end

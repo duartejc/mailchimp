@@ -6,14 +6,14 @@ defmodule Mailchimp.List.InterestCategoryTest do
   alias Mailchimp.List.InterestCategory
   alias Mailchimp.List.InterestCategory.Interest
 
-  doctest List
-
   setup_all do
     HTTPoison.start()
   end
 
   describe "interests/1" do
     test "returns list success" do
+      Application.put_env(:mailchimp, :api_key, "your apikey-us19")
+
       use_cassette "interests" do
         account = Account.get!()
         [list] = Account.lists!(account)
@@ -21,6 +21,8 @@ defmodule Mailchimp.List.InterestCategoryTest do
         {:ok, [%Interest{} | _]} = InterestCategory.interests(category)
         [%Interest{} | _] = InterestCategory.interests!(category)
       end
+
+      Application.delete_env(:mailchimp, :api_key)
     end
   end
 end

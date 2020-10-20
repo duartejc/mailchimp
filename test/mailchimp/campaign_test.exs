@@ -5,10 +5,10 @@ defmodule Mailchimp.CampaignTest do
   alias Mailchimp.Campaign
   alias Mailchimp.Campaign.Content
 
-  doctest Campaign
-
   setup_all do
+    Application.put_env(:mailchimp, :api_key, "your apikey-us19")
     HTTPoison.start()
+    on_exit(fn -> Application.delete_env(:mailchimp, :api_key) end)
   end
 
   describe "list/0" do

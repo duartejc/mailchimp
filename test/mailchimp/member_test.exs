@@ -4,8 +4,6 @@ defmodule Mailchimp.MemberTest do
 
   alias Mailchimp.{Account, List, Member}
 
-  doctest List
-
   setup_all do
     HTTPoison.start()
   end
