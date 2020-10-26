@@ -4,10 +4,10 @@ defmodule Mailchimp.AccountTest do
 
   alias Mailchimp.Account
 
-  doctest Account
-
   setup_all do
+    Application.put_env(:mailchimp, :api_key, "your apikey-us19")
     HTTPoison.start()
+    on_exit(fn -> Application.delete_env(:mailchimp, :api_key) end)
   end
 
   describe "get/0" do

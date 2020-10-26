@@ -5,8 +5,6 @@ defmodule Mailchimp.ListTest do
   alias Mailchimp.{Account, List, Member}
   alias Mailchimp.List.InterestCategory
 
-  doctest List
-
   setup_all do
     HTTPoison.start()
   end

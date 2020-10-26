@@ -32,7 +32,8 @@ defmodule Mailchimp.HTTPClient do
         url
 
       String.starts_with?(url, "/") ->
-        root <> String.slice(url, 1, 1000)
+        "/" <> splitted_url = url
+        root <> splitted_url
 
       true ->
         root <> url
