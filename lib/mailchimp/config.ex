@@ -83,6 +83,12 @@ defmodule Mailchimp.Config do
   """
   @spec root_endpoint!() :: String.t() | no_return
   def root_endpoint! do
-    "https://#{shard!()}.#{api_endpoint()}/#{api_version()}/"
+    case Application.get_env(:mailchimp, :root_endpoint) do
+      nil ->
+        "https://#{shard!()}.#{api_endpoint()}/#{api_version()}/"
+
+      endpoint ->
+        "#{endpoint}/"
+    end
   end
 end

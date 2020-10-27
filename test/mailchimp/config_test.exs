@@ -49,5 +49,11 @@ defmodule Mailchimp.ConfigTest do
       assert Config.root_endpoint!() == "https://us12.api.mailchimp.com/3.0/"
       Application.delete_env(:mailchimp, :api_key)
     end
+
+    test "should return a custom endpoint" do
+      Application.put_env(:mailchimp, :root_endpoint, "http://foobar.com")
+      assert Config.root_endpoint!() == "http://foobar.com/"
+      Application.delete_env(:mailchimp, :root_endpoint)
+    end
   end
 end
