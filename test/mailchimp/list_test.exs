@@ -38,6 +38,55 @@ defmodule Mailchimp.ListTest do
     end
   end
 
+  describe "batch_subscribe/3" do
+    test "subscribes members" do
+      use_cassette "members.create" do
+        account = Account.get!()
+        assert [list] = Account.lists!(account)
+
+        assert {:ok, members} =
+                 List.batch_subscribe(
+                   list,
+                   [
+                     %{
+                       email_address: "mailchimp1-test@elixir.com",
+                       merge_fields: %{LNAME: "Test"},
+                       language: "de"
+                     }
+                   ]
+                 )
+
+        assert %{
+                 new_members: [
+                   %Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}
+                 ]
+               } = members
+      end
+    end
+
+    test "subscribes members!" do
+      use_cassette "members.create" do
+        account = Account.get!()
+        assert [list] = Account.lists!(account)
+
+        assert members =
+                 List.batch_subscribe!(
+                   list,
+                   [
+                     %{
+                       email_address: "mailchimp1-test@elixir.com",
+                       status: "subscribed",
+                       merge_fields: %{LNAME: "Test"},
+                       language: "de"
+                     }
+                   ]
+                 )
+
+        assert %{new_members: [%Member{}]} = members
+      end
+    end
+  end
+
   describe "create_members/5" do
     test "creates members" do
       use_cassette "members.create" do

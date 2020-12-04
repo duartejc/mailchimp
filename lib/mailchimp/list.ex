@@ -164,8 +164,51 @@ defmodule Mailchimp.List do
     member
   end
 
-  def create_members(
+  @doc """
+  Batch subscribe members. Pass the List and the list of members with properties
+  such as email_address, status, and merge_fields (for example, for first and last name).
+  Additional options can be passed, such as update_existing. See the API docs for details:
+  https://mailchimp.com/developer/api/marketing/lists/batch-subscribe-or-unsubscribe/
+  """
+  def batch_subscribe(
         %__MODULE__{links: %{"self" => %Link{href: href}}},
+        members,
+        opts \\ %{}
+      ) do
+    # default options
+    opts = Map.merge(%{update_existing: false}, opts)
+    members = Enum.map(members, fn member -> Map.merge(%{status: "subscribed"}, member) end)
+
+    data = Map.merge(opts, %{members: members})
+
+    case HTTPClient.post(href, Jason.encode!(data)) do
+      {:ok, %Response{status_code: 200, body: body}} ->
+        body = body |> map_members(:new_members) |> map_members(:updated_members)
+        {:ok, body}
+
+      {:ok, %Response{status_code: _, body: body}} ->
+        {:error, body}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def batch_subscribe!(list, members, opts \\ %{}) do
+    {:ok, members} = batch_subscribe(list, members, opts)
+    members
+  end
+
+  defp map_members(body, key) do
+    members =
+      Map.get(body, key, [])
+      |> Enum.map(fn member -> Member.new(member) end)
+
+    Map.put(body, key, members)
+  end
+
+  def create_members(
+        list,
         email_addresses,
         status,
         merge_fields \\ %{},
@@ -180,18 +223,9 @@ defmodule Mailchimp.List do
         }
       end
 
-    data = Map.merge(additional_data, %{members: members, update_existing: false})
-
-    case HTTPClient.post(href, Jason.encode!(data)) do
-      {:ok, %Response{status_code: 200, body: body}} ->
-        members =
-          Map.get(body, :new_members, [])
-          |> Enum.map(fn member -> Member.new(member) end)
-
-        {:ok, members}
-
-      {:ok, %Response{status_code: _, body: body}} ->
-        {:error, body}
+    case batch_subscribe(list, members, additional_data) do
+      {:ok, response} ->
+        {:ok, response.new_members}
 
       {:error, error} ->
         {:error, error}
