@@ -119,6 +119,39 @@ defmodule Mailchimp.List do
     categories
   end
 
+  def create_or_update_member(
+        %__MODULE__{links: %{"members" => %Link{href: href}}},
+        email_address,
+        status_if_new,
+        merge_fields \\ %{},
+        additional_data \\ %{}
+      )
+      when is_binary(email_address) and is_map(merge_fields) and
+             status_if_new in ["subscribed", "pending", "unsubscribed", "cleaned"] do
+    subscriber_id =
+      email_address
+      |> String.downcase()
+      |> md5
+
+    data =
+      Map.merge(additional_data, %{
+        email_address: email_address,
+        status_if_new: status_if_new,
+        merge_fields: merge_fields
+      })
+
+    case HTTPClient.put(href <> "/#{subscriber_id}", Jason.encode!(data)) do
+      {:ok, %Response{status_code: 200, body: body}} ->
+        {:ok, Member.new(body)}
+
+      {:ok, %Response{status_code: _, body: body}} ->
+        {:error, body}
+
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
   def create_member(
         %__MODULE__{links: %{"members" => %Link{href: href}}},
         email_address,
@@ -161,6 +194,11 @@ defmodule Mailchimp.List do
 
   def create_member!(list, email_address, status, merge_fields \\ %{}, additional_data \\ %{}) do
     {:ok, member} = create_member(list, email_address, status, merge_fields, additional_data)
+    member
+  end
+
+  def create_or_update_member!(list, email_address, status_if_new, merge_fields \\ %{}, additional_data \\ %{}) do
+    {:ok, member} = create_or_update_member(list, email_address, status_if_new, merge_fields, additional_data)
     member
   end
 
