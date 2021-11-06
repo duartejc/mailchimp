@@ -1,13 +1,13 @@
 defmodule Mailchimp.Config do
   @moduledoc """
-  Mailchimp Config Module
+  Mailchimp Config Module.
   """
 
   @default_api_version "3.0"
   @default_api_endpoint "api.mailchimp.com"
 
   @doc """
-  Return configured API Key
+  Returns configured API Key.
 
   ### Examples
 
@@ -20,7 +20,7 @@ defmodule Mailchimp.Config do
   def api_key!, do: Application.fetch_env!(:mailchimp, :api_key)
 
   @doc """
-  Return configured API Version
+  Returns configured API Version.
 
   ### Examples
 
@@ -37,24 +37,24 @@ defmodule Mailchimp.Config do
   def api_version, do: Application.get_env(:mailchimp, :api_version, @default_api_version)
 
   @doc """
-  Return configured API endpoint
+  Returns configured API endpoint.
 
   ### Examples
 
-    iex> Application.put_env(:mailchimp, :api_endpoint, "api.mc.local")
-    iex> Mailchimp.Config.api_endpoint()
-    "api.mc.local"
+      iex> Application.put_env(:mailchimp, :api_endpoint, "api.mc.local")
+      iex> Mailchimp.Config.api_endpoint()
+      "api.mc.local"
 
-    iex> Application.delete_env(:mailchimp, :api_endpoint)
-    iex> Mailchimp.Config.api_endpoint()
-    "api.mailchimp.com"
+      iex> Application.delete_env(:mailchimp, :api_endpoint)
+      iex> Mailchimp.Config.api_endpoint()
+      "api.mailchimp.com"
 
   """
   @spec api_endpoint() :: String.t()
   def api_endpoint, do: Application.get_env(:mailchimp, :api_endpoint, @default_api_endpoint)
 
   @doc """
-  Return configured API Version
+  Returns configured API Version.
 
   ### Examples
 
@@ -71,7 +71,7 @@ defmodule Mailchimp.Config do
   end
 
   @doc """
-  Return configured API Version
+  Returns configured API Version.
 
   ### Examples
 
