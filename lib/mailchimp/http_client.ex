@@ -1,6 +1,6 @@
 defmodule Mailchimp.HTTPClient do
   @moduledoc """
-  Poison HTTP Client for Mailchimp
+  Poison HTTP Client for Mailchimp.
   """
 
   use HTTPoison.Base
@@ -8,7 +8,7 @@ defmodule Mailchimp.HTTPClient do
   alias Mailchimp.Config
 
   @doc """
-  Complete / Filter URL
+  Complete / Filter URL.
 
   ### Examples
 
@@ -49,7 +49,7 @@ defmodule Mailchimp.HTTPClient do
   end
 
   @doc """
-  Add Auth Header to every request that has none already
+  Add Auth Header to every request that has none already.
 
   ### Examples
 
