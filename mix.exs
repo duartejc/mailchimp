@@ -11,7 +11,8 @@ defmodule Mailchimp.Mixfile do
       elixir: "~> 1.7",
       package: package(),
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -25,7 +26,8 @@ defmodule Mailchimp.Mixfile do
     [
       {:httpoison, "~> 1.6"},
       {:jason, "~> 1.1"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.27.0", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.10", only: :test},
       {:exvcr, "~> 0.11", only: :test}
     ]
   end
@@ -46,6 +48,18 @@ defmodule Mailchimp.Mixfile do
         "LICENSE.md": [title: "License"],
         "README.md": [title: "Overview"]
       ],
+
+      groups_for_modules: [
+        "Account": [Mailchimp.Account],
+        "Batch": [Mailchimp.Batch],
+        "Campaing": [Mailchimp.Campaign, Mailchimp.Campaign.Content, Mailchimp.Campaign.Tracking],
+        "List": [Mailchimp.List, Mailchimp.List.InterestCategory, Mailchimp.List.InterestCategory.Interest],
+        "Link": [Mailchimp.Link],
+        "Member": [Mailchimp.Member],
+        "Template": [Mailchimp.Template]
+      ],
+
+      logo: "assets/logo.png",
       main: "readme",
       source_url: @source_url,
       formatters: ["html"]

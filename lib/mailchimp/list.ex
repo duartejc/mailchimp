@@ -4,25 +4,68 @@ defmodule Mailchimp.List do
   alias Mailchimp.Link
   alias Mailchimp.Member
   alias Mailchimp.List.InterestCategory
+  @moduledoc """
 
-  defstruct id: nil,
-            name: nil,
-            contact: nil,
-            permission_reminder: nil,
-            use_archive_bar: nil,
-            campaign_defaults: nil,
-            notify_on_subscribe: nil,
-            notify_on_unsubscribe: nil,
-            list_rating: nil,
-            email_type_option: nil,
-            subscribe_url_short: nil,
-            subscribe_url_long: nil,
-            beamer_address: nil,
-            visibility: nil,
-            modules: [],
-            stats: nil,
-            links: []
+  Your Mailchimp list, also known as your audience, is where you store and manage all of your contacts.
 
+  ### Struct Fields
+
+    * `id` - A string that uniquely identifies this list.
+
+    * `name` - The name of the list.
+
+    * `permission_reminder` - The  [persmission reminder](https://mailchimp.com/help/edit-the-permission-reminder/) for the list.
+
+    * `campaign_defaults` - Default values for campaigns created for this list.
+
+    * `notify_on_subscribe` - The email address to send subscribe notifications to.
+
+    * `notify_on_unsubscribe` - The email address to send unsubscribe notifications to.
+
+    * `list_rating` - An auto-generated activity score for the list (0-5).
+
+    * `email_type_option` - Whether the list support [multiple formats](https://mailchimp.com/help/change-audience-name-defaults/) for emails. When set to true, subscribers can choose whether they want to receive HTML or plain-text emails. When set to false, subscribers will receive HTML emails, with a plain-text alternative backup.
+
+    * `subscribe_url_short` - url [Link shortened version](https://mailchimp.com/help/share-your-signup-form/) of this list's subscribe form.
+
+    * `subscribe_url_long` - The full version of this list's subscribe form (host will vary).
+
+    * `beamer_address` - The list's [Email Beamer](https://mailchimp.com/help/use-email-beamer-to-create-a-campaign/) address.
+
+    * `visibility` - Legacy. visibility settings are no longer used Possible values: "pub" or "prv".
+
+    * `modules` - Any list-specific modules installed for this list.
+
+    * `stats` - Stats for the list. Many of these are cached for at least five minutes.
+
+    * `links` - A list of `Mailchimp.Link` types and descriptions for the API schema documents.
+
+  """
+
+
+  defstruct [
+    id: nil,
+    name: nil,
+    contact: nil,
+    permission_reminder: nil,
+    use_archive_bar: nil,
+    campaign_defaults: nil,
+    notify_on_subscribe: nil,
+    notify_on_unsubscribe: nil,
+    list_rating: nil,
+    email_type_option: nil,
+    subscribe_url_short: nil,
+    subscribe_url_long: nil,
+    beamer_address: nil,
+    visibility: nil,
+    modules: [],
+    stats: nil,
+    links: []
+  ]
+
+  @doc """
+    Generates an `Mailchimp.List` struct from the given attributes.
+  """
   def new(attributes) do
     %__MODULE__{
       id: attributes[:id],
@@ -30,6 +73,7 @@ defmodule Mailchimp.List do
       contact: attributes[:contact],
       permission_reminder: attributes[:permission_reminder],
       use_archive_bar: attributes[:use_archive_bar],
+
       campaign_defaults: attributes[:campaign_defaults],
       notify_on_subscribe: attributes[:notify_on_subscribe],
       notify_on_unsubscribe: attributes[:notify_on_unsubscribe],
@@ -45,7 +89,10 @@ defmodule Mailchimp.List do
     }
   end
 
-  def members(%__MODULE__{links: %{"members" => %Link{href: href}}}, query_params) do
+  @doc """
+    Fetches a list of `Mailchimp.Member` of a given list
+  """
+  def members(%__MODULE__{links: %{"members" => %Link{href: href}}}, query_params \\ %{}) do
     case HTTPClient.get(href, [], params: query_params) do
       {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, Enum.map(body.members, &Member.new(&1))}
@@ -58,11 +105,18 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `members/2`
+    but raises errors.
+  """
   def members!(list, query_params \\ %{}) do
     {:ok, members} = members(list, query_params)
     members
   end
 
+  @doc """
+    Fetches a `Mailchimp.Member` of a given list by it's email
+  """
   def get_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email) do
     subscriber_id =
       email
@@ -80,11 +134,18 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `get_member`
+    but raises errors.
+  """
   def get_member!(list, email) do
     {:ok, member} = get_member(list, email)
     member
   end
 
+  @doc """
+    Sends a request that removes a `Mailchimp.Member` of a given list by it's email
+  """
   def destroy_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email) do
     subscriber_id =
       email
@@ -102,6 +163,9 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Fetches a list of `Mailchimp.List.InterestCategory` of a given list
+  """
   def interest_categories(%__MODULE__{links: %{"interest-categories" => %Link{href: href}}}) do
     {:ok, response} = HTTPClient.get(href)
 
@@ -114,11 +178,18 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `interest_categories`
+    but raises errors.
+  """
   def interest_categories!(list) do
     {:ok, categories} = interest_categories(list)
     categories
   end
 
+  @doc """
+    Creates or updates a member at Mailchimp. You can pass merge_fields or additional_data
+  """
   def create_or_update_member(
         %__MODULE__{links: %{"members" => %Link{href: href}}},
         email_address,
@@ -128,6 +199,7 @@ defmodule Mailchimp.List do
       )
       when is_binary(email_address) and is_map(merge_fields) and
              status_if_new in ["subscribed", "pending", "unsubscribed", "cleaned"] do
+
     subscriber_id =
       email_address
       |> String.downcase()
@@ -152,6 +224,18 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `create_or_update_member/5`
+    but raises errors.
+  """
+  def create_or_update_member!(list, email_address, status_if_new, merge_fields \\ %{}, additional_data \\ %{}) do
+    {:ok, member} = create_or_update_member(list, email_address, status_if_new, merge_fields, additional_data)
+    member
+  end
+
+  @doc """
+    Creates a member at Mailchimp. You can pass merge_fields or additional_data
+  """
   def create_member(
         %__MODULE__{links: %{"members" => %Link{href: href}}},
         email_address,
@@ -192,15 +276,15 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `create_member/5`
+    but raises errors.
+  """
   def create_member!(list, email_address, status, merge_fields \\ %{}, additional_data \\ %{}) do
     {:ok, member} = create_member(list, email_address, status, merge_fields, additional_data)
     member
   end
 
-  def create_or_update_member!(list, email_address, status_if_new, merge_fields \\ %{}, additional_data \\ %{}) do
-    {:ok, member} = create_or_update_member(list, email_address, status_if_new, merge_fields, additional_data)
-    member
-  end
 
   @doc """
   Batch subscribe members. Pass the List and the list of members with properties
@@ -232,19 +316,19 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `batch_subscribe`
+    but raises errors.
+  """
   def batch_subscribe!(list, members, opts \\ %{}) do
     {:ok, members} = batch_subscribe(list, members, opts)
     members
   end
 
-  defp map_members(body, key) do
-    members =
-      Map.get(body, key, [])
-      |> Enum.map(fn member -> Member.new(member) end)
 
-    Map.put(body, key, members)
-  end
-
+  @doc """
+    Creates a list of members at Mailchimp. You can pass merge_fields or additional_data
+  """
   def create_members(
         list,
         email_addresses,
@@ -270,9 +354,21 @@ defmodule Mailchimp.List do
     end
   end
 
+  @doc """
+    Same as `create_members/5`
+    but raises errors.
+  """
   def create_members!(list, email_addresses, status, merge_fields \\ %{}, additional_data \\ %{}) do
     {:ok, members} = create_members(list, email_addresses, status, merge_fields, additional_data)
     members
+  end
+
+  defp map_members(body, key) do
+    members =
+      Map.get(body, key, [])
+      |> Enum.map(fn member -> Member.new(member) end)
+
+    Map.put(body, key, members)
   end
 
   defp md5(string) do
