@@ -1,7 +1,5 @@
 defmodule Mailchimp.Config do
-  @moduledoc """
-  Mailchimp Config Module.
-  """
+  @moduledoc  false
 
   @default_api_version "3.0"
   @default_api_endpoint "api.mailchimp.com"

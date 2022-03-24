@@ -38,4 +38,14 @@ defmodule Mailchimp.AccountTest do
       end
     end
   end
+
+  describe "get_all_lists/1" do
+    test "returns list success" do
+      use_cassette "account.lists" do
+        assert {:ok, [%Mailchimp.List{}]} = Account.get_all_lists()
+        assert [%Mailchimp.List{}] = Account.get_all_lists!()
+      end
+    end
+  end
+
 end

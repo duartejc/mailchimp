@@ -3,6 +3,23 @@ defmodule Mailchimp.Campaign.Content do
   alias HTTPoison.Response
   alias Mailchimp.HTTPClient
 
+  @moduledoc """
+
+  The HTML content for your Mailchimp landing pages.
+
+  ### Struct Fields
+
+    * `variate_contents` - The Mailchimp account ID.
+
+    * `plain_text` - The plain-text portion of the campaign. If left unspecified, we'll generate this automatically.
+
+    * `html` - The raw HTML for the campaign.
+
+    * `archive_html` - The Archive HTML for the campaign.
+
+    * `links` - A list of `Mailchimp.Link` types and descriptions for the API schema documents.
+  """
+
   defstruct [
     :variate_contents,
     :plain_text,
@@ -11,6 +28,9 @@ defmodule Mailchimp.Campaign.Content do
     :links
   ]
 
+  @doc """
+    Generates an `Mailchimp.Campaing.Content` struct from the given attributes.
+  """
   def new(attributes) do
     %__MODULE__{
       variate_contents: attributes[:variate_contents],
@@ -21,6 +41,9 @@ defmodule Mailchimp.Campaign.Content do
     }
   end
 
+  @doc """
+    Updates a Content in Mailchimp
+  """
   def update(%__MODULE__{links: %{"self" => %Link{href: href}}}, attrs \\ %{}) do
     {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
 
@@ -33,6 +56,10 @@ defmodule Mailchimp.Campaign.Content do
     end
   end
 
+  @doc """
+    Same as `update/2`
+    but raises errors.
+  """
   def update!(content, attrs \\ %{}) do
     {:ok, content} = update(content, attrs)
     content

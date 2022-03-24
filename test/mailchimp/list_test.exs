@@ -169,4 +169,32 @@ defmodule Mailchimp.ListTest do
       end
     end
   end
+
+  describe "members/2" do
+    test "returns a member type" do
+      use_cassette "list.members" do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+
+        {:ok, [%Member{}]} = List.members(list)
+        [%Member{}] = List.members!(list)
+      end
+    end
+  end
+
+  describe "check_diff_to_mailchimp/2" do
+    test "returns member not on mailchimp" do
+      use_cassette "list.members" do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+
+        member = %Member{email_address: "random-email@email.com"}
+
+        diff = List.check_diff_to_mailchimp!(list, [member])
+
+        assert [member] == diff.members_not_on_mailchimp
+        assert "test@test.com" == diff.members_only_on_mailchimp |> Enum.at(0) |> Map.get(:email_address)
+      end
+    end
+  end
 end

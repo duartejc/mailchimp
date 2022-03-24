@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :mailchimp,
   api_key: "your apikey-us19"

@@ -1,7 +1,5 @@
 defmodule Mailchimp.HTTPClient do
-  @moduledoc """
-  Poison HTTP Client for Mailchimp.
-  """
+  @moduledoc  false
 
   use HTTPoison.Base
 

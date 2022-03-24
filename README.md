@@ -46,7 +46,7 @@ Mailchimp.Account.get!()
 ### Getting All Lists
 
 ```elixir
-Mailchimp.Account.get! |> Mailchimp.Account.lists!
+Mailchimp.Account.get_all_lists!
 ```
 
 ### Adding a Member to a List
