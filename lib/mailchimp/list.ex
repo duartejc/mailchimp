@@ -105,6 +105,24 @@ defmodule Mailchimp.List do
     end
   end
 
+  def permanently_delete_member(%__MODULE__{links: %{"members" => %Link{href: href}}}, email) do
+    subscriber_id =
+      email
+      |> String.downcase()
+      |> md5
+
+    {:ok, response} =
+      HTTPClient.post(href <> "/#{subscriber_id}/actions/delete-permanent", Jason.encode!(%{}))
+
+    case response do
+      %Response{status_code: 204} ->
+        {:ok, email}
+
+      %Response{status_code: _, body: body} ->
+        {:error, body}
+    end
+  end
+
   @doc """
     Same as `members/2`
     but raises errors.
