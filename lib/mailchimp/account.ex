@@ -69,6 +69,7 @@ defmodule Mailchimp.Account do
 
   @doc """
     Fetch a list of `Mailchimp.List` for the given account with an optional query params.
+    If you are looking for fetching all lists check `get_all_lists`
   """
   def lists(%__MODULE__{links: %{"lists" => %Link{href: href}}}, query_params \\ %{}) do
     {:ok, response} = HTTPClient.get(href, [], params: query_params)
@@ -90,6 +91,28 @@ defmodule Mailchimp.Account do
     {:ok, lists} = lists(account, query_params)
     lists
   end
+
+  @doc """
+    Fetch a list of all `Mailchimp.List` for the given account
+  """
+  def get_all_lists() do
+    response = get()
+    case response do
+      {:ok, account} ->
+        lists(account)
+      error -> error
+    end
+  end
+
+  @doc """
+    Same as `get_all_lists/0`
+    but raises errors.
+  """
+  def get_all_lists!() do
+    get!()
+    |> lists!()
+  end
+
 
 
   @doc """
