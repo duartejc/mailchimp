@@ -114,6 +114,50 @@ defmodule Mailchimp.List do
     members
   end
 
+
+  @doc """
+    Fetches all members on the mailchimp list, and compares then to the given list of members.
+    Warning: This method only checks for the same email address
+
+    Raises errors on connection failure
+
+  ## Examples
+      iex> check_diff_to_mailchimp!(list,[member1])
+      %{members_on_mailchimp: [], members_not_on_mailchimp: []}
+
+  """
+  def check_diff_to_mailchimp!(list, members) do
+    members_on_mailchimp =
+      list
+      |> members!()
+
+    %{
+      members_not_on_mailchimp:
+        members
+        |> Enum.filter(
+          fn member ->
+            members_on_mailchimp
+            |> Enum.find(
+              fn member_on_mail_chimp ->
+                member_on_mail_chimp.email_address == member.email_address
+              end
+            ) == nil
+        end),
+
+      members_only_on_mailchimp:
+        members_on_mailchimp
+        |> Enum.filter(
+          fn member ->
+            members
+            |> Enum.find(
+              fn member_on_mail_chimp ->
+                member_on_mail_chimp.email_address == member.email_address
+              end
+            ) == nil
+        end)
+    }
+  end
+
   @doc """
     Fetches a `Mailchimp.Member` of a given list by it's email
   """
