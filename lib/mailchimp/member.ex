@@ -1,6 +1,6 @@
 defmodule Mailchimp.Member do
   alias Mailchimp.Link
-  alias HTTPoison.Response
+  alias HTTPoison.{Error, Response}
   alias Mailchimp.HTTPClient
 
   @moduledoc """
@@ -115,14 +115,15 @@ defmodule Mailchimp.Member do
       |> Map.delete(:links)
       |> Map.delete(:__struct__)
 
-    {:ok, response} = HTTPClient.put(href, Jason.encode!(attrs))
-
-    case response do
-      %Response{status_code: 200, body: body} ->
+    case HTTPClient.put(href, Jason.encode!(attrs)) do
+      {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, new(body)}
 
-      %Response{status_code: _, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, %Error{reason: reason}} ->
+        {:error, reason}
     end
   end
 
@@ -141,14 +142,16 @@ defmodule Mailchimp.Member do
   def update_tags(user = %__MODULE__{links: %{"update" => %Link{href: href}}, tags: tags})
       when is_list(tags) do
     attrs = %{tags: tags}
-    {:ok, response} = HTTPClient.post(href <> "/tags", Jason.encode!(attrs))
 
-    case response do
-      %Response{status_code: 204, body: _body} ->
+    case HTTPClient.post(href <> "/tags", Jason.encode!(attrs)) do
+      {:ok, %Response{status_code: 204, body: _body}} ->
         {:ok, user}
 
-      %Response{status_code: _code, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, %Error{reason: reason}} ->
+        {:error, reason}
     end
   end
 

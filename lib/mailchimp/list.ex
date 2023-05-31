@@ -185,14 +185,15 @@ defmodule Mailchimp.List do
       |> String.downcase()
       |> md5
 
-    {:ok, response} = HTTPClient.get(href <> "/#{subscriber_id}")
-
-    case response do
-      %Response{status_code: 200, body: body} ->
+    case HTTPClient.get(href <> "/#{subscriber_id}") do
+      {:ok, %Response{status_code: 200, body: body}} ->
         {:ok, Member.new(body)}
 
-      %Response{status_code: _, body: body} ->
+      {:ok, %Response{status_code: _, body: body}} ->
         {:error, body}
+
+      {:error, %Error{reason: reason}} ->
+        {:error, reason}
     end
   end
 
