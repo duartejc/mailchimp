@@ -1,5 +1,5 @@
 defmodule Mailchimp.HTTPClient do
-  @moduledoc  false
+  @moduledoc false
 
   use HTTPoison.Base
 
@@ -57,6 +57,6 @@ defmodule Mailchimp.HTTPClient do
 
   """
   def process_request_headers(headers) do
-    [{"Authorization", "Basic #{Config.api_key!()}"} | headers]
+    [{"Authorization", "Bearer #{Config.api_key!()}"} | headers]
   end
 end
