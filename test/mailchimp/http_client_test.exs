@@ -26,7 +26,7 @@ defmodule Mailchimp.HTTPClientTest do
       Application.put_env(:mailchimp, :api_key, "your apikey-us12")
 
       assert HTTPClient.process_request_headers([]) == [
-               {"Authorization", "Basic your apikey-us12"}
+               {"Authorization", "Bearer your apikey-us12"}
              ]
 
       Application.delete_env(:mailchimp, :api_key)
