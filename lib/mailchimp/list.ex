@@ -262,15 +262,22 @@ defmodule Mailchimp.List do
       )
       when is_binary(email_address) and is_map(merge_fields) and
              status_if_new in ["subscribed", "pending", "unsubscribed", "cleaned"] do
-
     subscriber_id =
       email_address
       |> String.downcase()
       |> md5
 
+    # Allows additional_data[:email_address] to update the subscriber_id's email address
+    additional_data =
+      Map.merge(
+        %{
+          email_address: email_address
+        },
+        additional_data
+      )
+
     data =
       Map.merge(additional_data, %{
-        email_address: email_address,
         status_if_new: status_if_new,
         merge_fields: merge_fields
       })
