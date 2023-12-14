@@ -267,7 +267,7 @@ defmodule Mailchimp.List do
       |> String.downcase()
       |> md5
 
-    # Allows additional_data[:email_address] to update the subscriber_id's email address
+    # Allows additional_data[:email_address] to update the member's email address
     additional_data =
       Map.merge(
         %{
