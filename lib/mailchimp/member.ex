@@ -187,7 +187,7 @@ defmodule Mailchimp.Member do
         optional_parameters
       )
 
-    case HTTPClient.put(href, Jason.encode!(attrs)) do
+    case HTTPClient.post(href, Jason.encode!(attrs)) do
       {:ok, %Response{status_code: 204, body: _body}} ->
         {:ok, user}
 
