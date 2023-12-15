@@ -34,4 +34,16 @@ defmodule Mailchimp.MemberTest do
       end
     end
   end
+
+  describe "add_event/1" do
+    test "adds event" do
+      use_cassette "member.add_event" do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+        member = List.get_member!(list, "test@elixir.com")
+
+        {:ok, %Member{email_address: "test@elixir.com"}} = Member.add_event(member, "test_event")
+      end
+    end
+  end
 end

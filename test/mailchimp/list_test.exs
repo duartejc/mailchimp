@@ -36,6 +36,34 @@ defmodule Mailchimp.ListTest do
           )
       end
     end
+
+    test "updates existing member's email address" do
+      use_cassette "member.create_or_update.update_email" do
+        account = Account.get!()
+        [list] = Account.lists!(account)
+
+        {:ok, %Member{status: "subscribed", merge_fields: %{LNAME: "Test"}, language: "de"}} =
+          List.create_or_update_member(
+            list,
+            "mailchimp1-test@elixir.com",
+            "subscribed",
+            %{LNAME: "Test"},
+            %{
+              language: "de",
+              email_address: "mailchimp2-test@elixir.com"
+            }
+          )
+
+        %Member{} =
+          List.create_or_update_member!(
+            list,
+            "mailchimp1-test@elixir.com",
+            "subscribed",
+            %{LNAME: "Test"},
+            %{language: "de", email_address: "mailchimp2-test@elixir.com"}
+          )
+      end
+    end
   end
 
   describe "create_member/5" do
