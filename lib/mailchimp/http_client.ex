@@ -53,7 +53,7 @@ defmodule Mailchimp.HTTPClient do
 
       iex> Application.put_env(:mailchimp, :api_key, "your apikey-us12")
       iex> Mailchimp.HTTPClient.process_request_headers([])
-      [{"Authorization", "Basic your apikey-us12"}]
+      [{"Authorization", "Bearer your apikey-us12"}]
 
   """
   def process_request_headers(headers) do

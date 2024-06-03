@@ -172,4 +172,39 @@ defmodule Mailchimp.Member do
 
     {:ok, status_code}
   end
+
+  @doc """
+    Adds event to the member in Mailchimp
+  """
+  def add_event(
+        user = %__MODULE__{links: %{"events" => %Link{href: href}}},
+        name,
+        optional_parameters \\ %{}
+      ) do
+    attrs =
+      Map.merge(
+        %{name: name},
+        optional_parameters
+      )
+
+    case HTTPClient.post(href, Jason.encode!(attrs)) do
+      {:ok, %Response{status_code: 204, body: _body}} ->
+        {:ok, user}
+
+      {:ok, %Response{status_code: _, body: body}} ->
+        {:error, body}
+
+      {:error, %Error{reason: reason}} ->
+        {:error, reason}
+    end
+  end
+
+  @doc """
+    Same as `add_event/2`
+    but raises errors.
+  """
+  def add_event!(user, name, optional_parameters \\ %{}) do
+    {:ok, user} = add_event(user, name, optional_parameters)
+    user
+  end
 end
