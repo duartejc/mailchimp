@@ -24,8 +24,8 @@ defmodule Mailchimp.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.1"},
+      {:httpoison, "~> 2.0"},
+      {:jason, "~> 1.2"},
       {:ex_doc, ">= 0.27.0", only: :dev, runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:exvcr, "~> 0.11", only: :test}
